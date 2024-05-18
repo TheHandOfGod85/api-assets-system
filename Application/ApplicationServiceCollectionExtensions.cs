@@ -8,6 +8,7 @@ public static class ApplicationServiceCollectionExtensions
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
         services.AddScoped<IAssetRepository, AssetRepository>();
+        services.AddScoped<IAssetService, AssetService>();
         return services;
     }
 

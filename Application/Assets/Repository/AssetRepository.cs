@@ -25,6 +25,11 @@ public class AssetRepository(AssetDbContext _dbContext) : IAssetRepository
         return result > 0;
     }
 
+    public async Task<bool> ExistByIdAsync(Guid id)
+    {
+        return await _dbContext.Assets.AnyAsync(x => x.Id == id);
+    }
+
     public async Task<IEnumerable<Asset>> GetAllAsync()
     {
         var assets = await _dbContext.Assets.ToListAsync();

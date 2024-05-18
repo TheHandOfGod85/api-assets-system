@@ -4,22 +4,22 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Web.API;
 [ApiController]
-public class AssetController(IAssetRepository assetRepository) : ControllerBase
+public class AssetController(IAssetService assetService) : ControllerBase
 {
-    private readonly IAssetRepository _assetRepository = assetRepository;
+    private readonly IAssetService _asseService = assetService;
 
     [HttpPost(Endpoints.Assets.Create)]
     public async Task<IActionResult> Create([FromBody] CreateAssetRequest request)
     {
         var asset = request.MapToAsset();
-        await _assetRepository.CreateAsync(asset);
+        await _asseService.CreateAsync(asset);
         return CreatedAtAction(nameof(Get), new { id = asset.Id }, asset);
     }
 
     [HttpGet(Endpoints.Assets.Get)]
     public async Task<IActionResult> Get([FromRoute] Guid id)
     {
-        var asset = await _assetRepository.GetByIdAsync(id);
+        var asset = await _asseService.GetByIdAsync(id);
         if (asset is null)
         {
             return NotFound();
@@ -31,7 +31,7 @@ public class AssetController(IAssetRepository assetRepository) : ControllerBase
     [HttpGet(Endpoints.Assets.GetAll)]
     public async Task<IActionResult> GetAll()
     {
-        var assets = await _assetRepository.GetAllAsync();
+        var assets = await _asseService.GetAllAsync();
         var assetsResponse = assets.MapToAssetsResponse();
         return Ok(assetsResponse);
     }
@@ -40,19 +40,19 @@ public class AssetController(IAssetRepository assetRepository) : ControllerBase
     public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateAssetRequest request)
     {
         var asset = request.MapToAsset(id);
-        var updated = await _assetRepository.UpdateAsync(asset);
-        if (!updated)
+        var updatedAsset = await _asseService.UpdateAsync(asset);
+        if (updatedAsset is null)
         {
             return NotFound();
         }
-        var response = asset.MapToAssetResponse();
+        var response = updatedAsset.MapToAssetResponse();
         return Ok(response);
     }
 
     [HttpDelete(Endpoints.Assets.Delete)]
     public async Task<IActionResult> Delete([FromRoute] Guid id)
     {
-        var deleted = await _assetRepository.DeleteByIdAsync(id);
+        var deleted = await _asseService.DeleteByIdAsync(id);
         if (!deleted)
         {
             return NotFound();
