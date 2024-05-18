@@ -4,8 +4,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 var config = builder.Configuration;
 builder.Services.AddControllers();
-builder.Services.AddApplication();
 builder.Services.AddDatabase(config["Database:ConnectionString"]!);
+builder.Services.AddApplication();
 
 var app = builder.Build();
 

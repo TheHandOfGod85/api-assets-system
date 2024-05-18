@@ -7,6 +7,4 @@ public class AssetResponse
     public required string SerialNUmber { get; init; }
     public string? Description { get; init; }
     public required string Department { get; init; }
-    public DateTime CreatedAt { get; init; }
-    public DateTime UpdatedAt { get; init; }
 }

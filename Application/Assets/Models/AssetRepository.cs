@@ -39,12 +39,17 @@ public class AssetRepository(AssetDbContext _dbContext) : IAssetRepository
 
     public async Task<bool> UpdateAsync(Asset asset)
     {
-        var assetToUpdate = await _dbContext.Assets.FirstOrDefaultAsync(x => x.Id == asset.Id);
-        if (asset is null)
+        var assetToUpdate = await _dbContext.Assets.AsNoTracking().FirstOrDefaultAsync(x => x.Id == asset.Id);
+        if (assetToUpdate is null)
         {
             return false;
         }
-        _dbContext.Update(asset);
+        assetToUpdate.Name = assetToUpdate.Name;
+        assetToUpdate.Description = asset.Description;
+        assetToUpdate.SerialNumber = asset.SerialNumber;
+        assetToUpdate.Department = asset.Department;
+
+        _dbContext.Update(assetToUpdate);
         var result = await _dbContext.SaveChangesAsync();
         return result > 0;
     }
