@@ -36,7 +36,7 @@ public class AssetController(IAssetRepository assetRepository) : ControllerBase
         return Ok(assetsResponse);
     }
 
-    [HttpPut(Endpoints.Assets.Update)]
+    [HttpPatch(Endpoints.Assets.Update)]
     public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateAssetRequest request)
     {
         var asset = request.MapToAsset(id);

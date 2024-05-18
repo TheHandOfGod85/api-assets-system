@@ -6,4 +6,5 @@ public class UpdateAssetRequest
     public required string SerialNumber { get; init; }
     public string? Description { get; init; }
     public required string Department { get; init; }
+    public DateTime UpdatedAt { get; init; } = DateTime.UtcNow;
 }

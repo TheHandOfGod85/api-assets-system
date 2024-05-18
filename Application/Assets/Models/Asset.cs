@@ -7,7 +7,7 @@ public class Asset
     public required string SerialNumber { get; set; }
     public required string Department { get; set; }
     public string? Description { get; set; }
-    public DateTime CreatedAt { get; set; } = DateTime.Now;
+    public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
 
 }

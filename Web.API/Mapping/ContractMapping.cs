@@ -14,6 +14,7 @@ public static class ContractMapping
             Department = request.Department,
             Description = request.Description,
             Id = Guid.NewGuid(),
+            CreatedAt = request.CreatedAt,
         };
     }
 
@@ -48,6 +49,7 @@ public static class ContractMapping
             SerialNumber = request.SerialNumber,
             Department = request.Department,
             Description = request.Description,
+            UpdatedAt = request.UpdatedAt,
         };
     }
 }
