@@ -1,7 +1,4 @@
-﻿
-using System.Data.Common;
-using FluentValidation;
-using Microsoft.EntityFrameworkCore;
+﻿using FluentValidation;
 using Microsoft.Extensions.Logging;
 
 namespace Application;
@@ -9,21 +6,29 @@ namespace Application;
 public class AssetService(
     IAssetRepository assetRepository,
     IValidator<Asset> validator,
+    IUnityOfWork unityOfWork,
     ILogger<AssetService> logger) : IAssetService
 {
     private readonly IAssetRepository _assetRepository = assetRepository;
     private readonly IValidator<Asset> _validator = validator;
+    private readonly IUnityOfWork _unityOfWork = unityOfWork;
     private readonly ILogger<AssetService> _logger = logger;
 
     public async Task<bool> CreateAsync(Asset asset)
     {
         await _validator.ValidateAndThrowAsync(asset);
-        return await _assetRepository.CreateAsync(asset);
+        _assetRepository.CreateAsync(asset);
+        var result = await _unityOfWork.SaveChangesAsync();
+        return result > 0;
     }
 
-    public Task<bool> DeleteByIdAsync(Guid id)
+    public async Task<bool> DeleteByIdAsync(Guid id)
     {
-        return _assetRepository.DeleteByIdAsync(id);
+        var asset = await _assetRepository.GetByIdAsync(id);
+        if (asset is null) return false;
+        _assetRepository.DeleteAsync(asset);
+        var result = await _unityOfWork.SaveChangesAsync();
+        return result > 0;
     }
 
     public Task<IEnumerable<Asset>> GetAllAsync()
@@ -36,24 +41,23 @@ public class AssetService(
         return _assetRepository.GetByIdAsync(id);
     }
 
-    public async Task<Asset?> UpdateAsync(Asset asset)
+    public async Task<bool> UpdateAsync(Asset asset)
     {
-        try
-        {
-            var assetExists = await _assetRepository.ExistsByIdAsync(asset.Id);
-            if (!assetExists)
-            {
-                return null;
-            }
 
-            await _assetRepository.UpdateAsync(asset);
-
-            return asset;
-        }
-        catch (DbUpdateException ex)
+        var assetToUpdate = await _assetRepository.GetByIdAsync(asset.Id);
+        if (assetToUpdate is null)
         {
-            _logger.LogError(ex.Message);
-            throw;
+            return false;
         }
+        assetToUpdate.Name = asset.Name;
+        assetToUpdate.Description = asset.Description;
+        assetToUpdate.SerialNumber = asset.SerialNumber;
+        assetToUpdate.Department = asset.Department;
+
+        _assetRepository.UpdateAsync(assetToUpdate);
+
+        var result = await _unityOfWork.SaveChangesAsync();
+
+        return result > 0;
     }
 }

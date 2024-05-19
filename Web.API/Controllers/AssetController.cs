@@ -41,12 +41,12 @@ public class AssetController(IAssetService assetService) : ControllerBase
     {
         var asset = request.MapToAsset(id);
         var updatedAsset = await _asseService.UpdateAsync(asset);
-        if (updatedAsset is null)
+        if (!updatedAsset)
         {
             return NotFound();
         }
-        var response = updatedAsset.MapToAssetResponse();
-        return Ok(response);
+        // var response = updatedAsset.MapToAssetResponse();
+        return NoContent();
     }
 
     [HttpDelete(Endpoints.Assets.Delete)]

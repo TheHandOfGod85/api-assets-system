@@ -3,8 +3,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application;
 
-public class AssetDbContext(DbContextOptions options) : DbContext(options)
+public class AssetDbContext : DbContext, IUnityOfWork
 {
+    public AssetDbContext(DbContextOptions options) : base(options)
+    {
+
+    }
     public DbSet<Asset> Assets { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

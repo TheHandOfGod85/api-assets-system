@@ -2,11 +2,11 @@
 
 public interface IAssetRepository
 {
-    Task<bool> CreateAsync(Asset asset);
+    void CreateAsync(Asset asset);
     Task<Asset?> GetByIdAsync(Guid id);
     Task<IEnumerable<Asset>> GetAllAsync();
-    Task<bool> UpdateAsync(Asset asset);
-    Task<bool> DeleteByIdAsync(Guid id);
+    void UpdateAsync(Asset asset);
+    void DeleteAsync(Asset asset);
     Task<bool> IsSerialNumberUnique(string serialNumber);
     Task<bool> ExistsByIdAsync(Guid id);
 }
