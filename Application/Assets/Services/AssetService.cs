@@ -1,22 +1,18 @@
-﻿using FluentValidation;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 
 namespace Application;
 
 public class AssetService(
     IAssetRepository assetRepository,
-    IValidator<Asset> validator,
     IUnityOfWork unityOfWork,
     ILogger<AssetService> logger) : IAssetService
 {
     private readonly IAssetRepository _assetRepository = assetRepository;
-    private readonly IValidator<Asset> _validator = validator;
     private readonly IUnityOfWork _unityOfWork = unityOfWork;
     private readonly ILogger<AssetService> _logger = logger;
 
     public async Task<bool> CreateAsync(Asset asset)
     {
-        await _validator.ValidateAndThrowAsync(asset);
         _assetRepository.CreateAsync(asset);
         var result = await _unityOfWork.SaveChangesAsync();
         return result > 0;

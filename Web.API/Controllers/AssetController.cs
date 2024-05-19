@@ -4,7 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Web.API;
 [ApiController]
-public class AssetController(IAssetService assetService) : ControllerBase
+public class AssetController(
+    IAssetService assetService) : ControllerBase
 {
     private readonly IAssetService _asseService = assetService;
 
