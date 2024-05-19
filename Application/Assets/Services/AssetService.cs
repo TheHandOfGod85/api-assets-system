@@ -23,10 +23,10 @@ public class AssetService(
     public async Task<Result<bool>> DeleteByIdAsync(Guid id)
     {
         var asset = await _assetRepository.GetByIdAsync(id);
-        if (asset is null) return false;
+        if (asset is null) return Result.Failure<bool>(AssetErrors.NotFound(id));
         _assetRepository.DeleteAsync(asset);
         var result = await _unityOfWork.SaveChangesAsync();
-        return result > 0;
+        return Result.Success(result > 0);
     }
 
     public async Task<Result<IEnumerable<Asset>>> GetAllAsync()
@@ -39,16 +39,17 @@ public class AssetService(
     public async Task<Result<Asset?>> GetByIdAsync(Guid id)
     {
         var asset = await _assetRepository.GetByIdAsync(id);
-        return Result.Success(asset);
+        if (asset is null) return Result.Failure<Asset?>(AssetErrors.NotFound(id));
+        return Result.Success<Asset?>(asset);
     }
 
-    public async Task<Result<bool>> UpdateAsync(Asset asset)
+    public async Task<Result<Asset>> UpdateAsync(Asset asset)
     {
 
         var assetToUpdate = await _assetRepository.GetByIdAsync(asset.Id);
         if (assetToUpdate is null)
         {
-            return Result.Failure<bool>(AssetErrors.NotFound(asset.Id));
+            return Result.Failure<Asset>(AssetErrors.NotFound(asset.Id));
         }
         assetToUpdate.Name = asset.Name;
         assetToUpdate.Description = asset.Description;
@@ -56,14 +57,14 @@ public class AssetService(
 
         if (assetToUpdate.SerialNumber != asset.SerialNumber)
         {
-            if (!await _assetRepository.IsSerialNumberUnique(asset.SerialNumber)) return Result.Failure<bool>(AssetErrors.SerialNumberNotUnique);
+            if (!await _assetRepository.IsSerialNumberUnique(asset.SerialNumber)) return Result.Failure<Asset>(AssetErrors.SerialNumberNotUnique);
         }
 
         assetToUpdate.SerialNumber = asset.SerialNumber;
         _assetRepository.UpdateAsync(assetToUpdate);
 
-        var result = await _unityOfWork.SaveChangesAsync();
+        await _unityOfWork.SaveChangesAsync();
 
-        return Result.Success(result > 0);
+        return Result.Success(assetToUpdate);
     }
 }

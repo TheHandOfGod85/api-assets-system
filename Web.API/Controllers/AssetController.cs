@@ -22,8 +22,9 @@ public class AssetController(
     public async Task<IActionResult> Get([FromRoute] Guid id)
     {
         Result<Asset?> result = await _asseService.GetByIdAsync(id);
-        var response = result.Value.MapToAssetResponse();
-        return result.IsSuccess ? Ok(response) : result.ToProblemDetails();
+        return result.IsSuccess
+        ? Ok(result.Value?.MapToAssetResponse())
+        : result.ToProblemDetails();
     }
 
     [HttpGet(Endpoints.Assets.GetAll)]
@@ -38,11 +39,10 @@ public class AssetController(
     public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateAssetRequest request)
     {
         var asset = request.MapToAsset(id);
-        Result<bool> result = await _asseService.UpdateAsync(asset);
-
-        // var response = updatedAsset.MapToAssetResponse();
-
-        return result.IsSuccess ? NoContent() : result.ToProblemDetails();
+        Result<Asset> result = await _asseService.UpdateAsync(asset);
+        return result.IsSuccess
+        ? Ok(result.Value.MapToAssetResponse())
+        : result.ToProblemDetails();
     }
 
     [HttpDelete(Endpoints.Assets.Delete)]
