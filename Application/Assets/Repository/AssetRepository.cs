@@ -25,10 +25,11 @@ public class AssetRepository(AssetDbContext _dbContext) : IAssetRepository
         return result > 0;
     }
 
-    public async Task<bool> ExistByIdAsync(Guid id)
+    public async Task<bool> ExistsByIdAsync(Guid id)
     {
         return await _dbContext.Assets.AnyAsync(x => x.Id == id);
     }
+
 
     public async Task<IEnumerable<Asset>> GetAllAsync()
     {
@@ -40,6 +41,11 @@ public class AssetRepository(AssetDbContext _dbContext) : IAssetRepository
     {
         var asset = await _dbContext.Assets.FirstOrDefaultAsync(x => x.Id == id);
         return asset;
+    }
+
+    public async Task<bool> IsSerialNumberUnique(string serialNumber)
+    {
+        return !await _dbContext.Assets.AnyAsync(a => a.SerialNumber == serialNumber);
     }
 
     public async Task<bool> UpdateAsync(Asset asset)
@@ -58,4 +64,5 @@ public class AssetRepository(AssetDbContext _dbContext) : IAssetRepository
         var result = await _dbContext.SaveChangesAsync();
         return result > 0;
     }
+
 }

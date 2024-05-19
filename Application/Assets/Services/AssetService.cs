@@ -1,12 +1,24 @@
 ﻿
+using System.Data.Common;
+using FluentValidation;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+
 namespace Application;
 
-public class AssetService(IAssetRepository assetRepository) : IAssetService
+public class AssetService(
+    IAssetRepository assetRepository,
+    IValidator<Asset> validator,
+    ILogger<AssetService> logger) : IAssetService
 {
     private readonly IAssetRepository _assetRepository = assetRepository;
-    public Task<bool> CreateAsync(Asset asset)
+    private readonly IValidator<Asset> _validator = validator;
+    private readonly ILogger<AssetService> _logger = logger;
+
+    public async Task<bool> CreateAsync(Asset asset)
     {
-        return _assetRepository.CreateAsync(asset);
+        await _validator.ValidateAndThrowAsync(asset);
+        return await _assetRepository.CreateAsync(asset);
     }
 
     public Task<bool> DeleteByIdAsync(Guid id)
@@ -26,14 +38,22 @@ public class AssetService(IAssetRepository assetRepository) : IAssetService
 
     public async Task<Asset?> UpdateAsync(Asset asset)
     {
-        var assetExists = await _assetRepository.ExistsByIdAsync(asset.Id);
-        if (!assetExists)
+        try
         {
-            return null;
+            var assetExists = await _assetRepository.ExistsByIdAsync(asset.Id);
+            if (!assetExists)
+            {
+                return null;
+            }
+
+            await _assetRepository.UpdateAsync(asset);
+
+            return asset;
         }
-
-        await _assetRepository.UpdateAsync(asset);
-
-        return asset;
+        catch (DbUpdateException ex)
+        {
+            _logger.LogError(ex.Message);
+            throw;
+        }
     }
 }

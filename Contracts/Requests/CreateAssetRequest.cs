@@ -2,8 +2,8 @@
 
 public class CreateAssetRequest
 {
-    public required string Name { get; init; }
-    public required string SerialNumber { get; init; }
+    public string Name { get; init; } = default!;
+    public string SerialNumber { get; init; } = default!;
     public string? Description { get; init; }
-    public required string Department { get; init; }
+    public string Department { get; init; } = default!;
 }
