@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using SharedKernel;
 
 namespace Application;
 
@@ -11,14 +12,15 @@ public class AssetService(
     private readonly IUnityOfWork _unityOfWork = unityOfWork;
     private readonly ILogger<AssetService> _logger = logger;
 
-    public async Task<bool> CreateAsync(Asset asset)
+    public async Task<Result<bool>> CreateAsync(Asset asset)
     {
         _assetRepository.CreateAsync(asset);
+        if (!await _assetRepository.IsSerialNumberUnique(asset.SerialNumber)) return Result.Failure<bool>(AssetErrors.SerialNumberNotUnique);
         var result = await _unityOfWork.SaveChangesAsync();
-        return result > 0;
+        return Result.Success(result > 0);
     }
 
-    public async Task<bool> DeleteByIdAsync(Guid id)
+    public async Task<Result<bool>> DeleteByIdAsync(Guid id)
     {
         var asset = await _assetRepository.GetByIdAsync(id);
         if (asset is null) return false;
@@ -27,33 +29,41 @@ public class AssetService(
         return result > 0;
     }
 
-    public Task<IEnumerable<Asset>> GetAllAsync()
+    public async Task<Result<IEnumerable<Asset>>> GetAllAsync()
     {
-        return _assetRepository.GetAllAsync();
+        var assets = await _assetRepository.GetAllAsync();
+
+        return Result.Success(assets);
     }
 
-    public Task<Asset?> GetByIdAsync(Guid id)
+    public async Task<Result<Asset?>> GetByIdAsync(Guid id)
     {
-        return _assetRepository.GetByIdAsync(id);
+        var asset = await _assetRepository.GetByIdAsync(id);
+        return Result.Success(asset);
     }
 
-    public async Task<bool> UpdateAsync(Asset asset)
+    public async Task<Result<bool>> UpdateAsync(Asset asset)
     {
 
         var assetToUpdate = await _assetRepository.GetByIdAsync(asset.Id);
         if (assetToUpdate is null)
         {
-            return false;
+            return Result.Failure<bool>(AssetErrors.NotFound(asset.Id));
         }
         assetToUpdate.Name = asset.Name;
         assetToUpdate.Description = asset.Description;
-        assetToUpdate.SerialNumber = asset.SerialNumber;
         assetToUpdate.Department = asset.Department;
 
+        if (assetToUpdate.SerialNumber != asset.SerialNumber)
+        {
+            if (!await _assetRepository.IsSerialNumberUnique(asset.SerialNumber)) return Result.Failure<bool>(AssetErrors.SerialNumberNotUnique);
+        }
+
+        assetToUpdate.SerialNumber = asset.SerialNumber;
         _assetRepository.UpdateAsync(assetToUpdate);
 
         var result = await _unityOfWork.SaveChangesAsync();
 
-        return result > 0;
+        return Result.Success(result > 0);
     }
 }

@@ -1,10 +1,12 @@
-﻿namespace Application;
+﻿using SharedKernel;
+
+namespace Application;
 
 public interface IAssetService
 {
-    Task<bool> CreateAsync(Asset asset);
-    Task<Asset?> GetByIdAsync(Guid id);
-    Task<IEnumerable<Asset>> GetAllAsync();
-    Task<bool> UpdateAsync(Asset asset);
-    Task<bool> DeleteByIdAsync(Guid id);
+    Task<Result<bool>> CreateAsync(Asset asset);
+    Task<Result<Asset?>> GetByIdAsync(Guid id);
+    Task<Result<IEnumerable<Asset>>> GetAllAsync();
+    Task<Result<bool>> UpdateAsync(Asset asset);
+    Task<Result<bool>> DeleteByIdAsync(Guid id);
 }
