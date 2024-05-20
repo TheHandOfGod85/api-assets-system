@@ -9,8 +9,6 @@ public class AssetRepository(AssetDbContext _dbContext) : IAssetRepository
     public void CreateAsync(Asset asset)
     {
         _dbContext.Assets.Add(asset);
-        // var result = await _dbContext.SaveChangesAsync();
-        // return result > 0;
     }
 
     public void DeleteAsync(Asset asset)

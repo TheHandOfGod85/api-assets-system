@@ -8,13 +8,13 @@ public static class ContractMapping
     public static Asset MapToAsset(this CreateAssetRequest request)
     {
         return new Asset
-        {
-            Name = request.Name,
-            SerialNumber = request.SerialNumber,
-            Department = request.Department,
-            Description = request.Description,
-            Id = Guid.NewGuid(),
-        };
+        (
+            request.Name,
+            request.Department,
+            request.SerialNumber,
+            request.Description,
+            Guid.NewGuid()
+        );
     }
 
     public static AssetResponse MapToAssetResponse(this Asset asset)
@@ -40,12 +40,12 @@ public static class ContractMapping
     public static Asset MapToAsset(this UpdateAssetRequest request, Guid id)
     {
         return new Asset
-        {
-            Id = id,
-            Name = request.Name,
-            SerialNumber = request.SerialNumber,
-            Department = request.Department,
-            Description = request.Description,
-        };
+        (
+            request.Name,
+            request.Department,
+            request.SerialNumber,
+            request.Description,
+            id
+        );
     }
 }

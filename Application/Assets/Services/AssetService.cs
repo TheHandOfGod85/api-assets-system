@@ -52,20 +52,24 @@ public class AssetService(
         {
             return Result.Failure<Asset>(AssetErrors.NotFound(asset.Id));
         }
-        assetToUpdate.Name = asset.Name;
-        assetToUpdate.Description = asset.Description;
-        assetToUpdate.Department = asset.Department;
-
         if (assetToUpdate.SerialNumber != asset.SerialNumber)
         {
             if (!await _assetRepository.IsSerialNumberUnique(asset.SerialNumber)) return Result.Failure<Asset>(AssetErrors.SerialNumberNotUnique);
         }
 
-        assetToUpdate.SerialNumber = asset.SerialNumber;
+        assetToUpdate.UpdateAsset
+        (
+            asset.Id,
+            asset.Name,
+            asset.Department,
+            asset.SerialNumber,
+            asset.Description
+        );
+
         _assetRepository.UpdateAsync(assetToUpdate);
 
         await _unityOfWork.SaveChangesAsync();
 
-        return Result.Success(assetToUpdate);
+        return Result.Success(asset);
     }
 }
