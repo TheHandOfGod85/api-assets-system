@@ -1,5 +1,6 @@
 ﻿using Application;
 using Contracts;
+using Domain;
 using Microsoft.AspNetCore.Mvc;
 using SharedKernel;
 

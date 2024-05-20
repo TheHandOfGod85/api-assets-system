@@ -1,7 +1,9 @@
 ﻿using System.Reflection;
+using Application;
+using Domain;
 using Microsoft.EntityFrameworkCore;
 
-namespace Application;
+namespace Infrastructure;
 
 public class AssetDbContext : DbContext, IUnityOfWork
 {

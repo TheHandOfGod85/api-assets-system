@@ -1,6 +1,7 @@
-﻿using SharedKernel;
+﻿
+using SharedKernel;
 
-namespace Application;
+namespace Domain;
 
 public static class AssetErrors
 {

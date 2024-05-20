@@ -1,7 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Domain;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Application;
+namespace Infrastructure;
 
 public class AssetConfiguration : IEntityTypeConfiguration<Asset>
 {

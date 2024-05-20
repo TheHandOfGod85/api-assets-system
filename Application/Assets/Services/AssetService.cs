@@ -1,5 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
-using SharedKernel;
+﻿using SharedKernel;
+using Domain;
+using Microsoft.Extensions.Logging;
 
 namespace Application;
 

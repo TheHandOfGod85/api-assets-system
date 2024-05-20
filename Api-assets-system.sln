@@ -11,6 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contracts", "Contracts\Cont
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedKernel", "SharedKernel\SharedKernel.csproj", "{B6B78EAC-ACC5-4A8B-8A47-A89B9194E7DF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{3BABE5DE-FFFA-4B83-974C-175ED03C831E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{A3759984-F79A-4F8A-B994-6EAFDD86E864}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +40,13 @@ Global
 		{B6B78EAC-ACC5-4A8B-8A47-A89B9194E7DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B6B78EAC-ACC5-4A8B-8A47-A89B9194E7DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B6B78EAC-ACC5-4A8B-8A47-A89B9194E7DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3BABE5DE-FFFA-4B83-974C-175ED03C831E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3BABE5DE-FFFA-4B83-974C-175ED03C831E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3BABE5DE-FFFA-4B83-974C-175ED03C831E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3BABE5DE-FFFA-4B83-974C-175ED03C831E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3759984-F79A-4F8A-B994-6EAFDD86E864}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3759984-F79A-4F8A-B994-6EAFDD86E864}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3759984-F79A-4F8A-B994-6EAFDD86E864}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3759984-F79A-4F8A-B994-6EAFDD86E864}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -1,5 +1,5 @@
-﻿using Application;
-using Contracts;
+﻿using Contracts;
+using Domain;
 
 namespace Web.API;
 

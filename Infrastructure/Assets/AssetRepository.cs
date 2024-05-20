@@ -1,6 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Application;
+using Domain;
+using Microsoft.EntityFrameworkCore;
 
-namespace Application;
+namespace Infrastructure;
 
 public class AssetRepository(AssetDbContext _dbContext) : IAssetRepository
 {
