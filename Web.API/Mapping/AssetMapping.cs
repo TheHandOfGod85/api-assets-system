@@ -7,30 +7,15 @@ public static class AssetMapping
 {
     public static Asset MapToAsset(this CreateAssetRequest request)
     {
-        if (request.Department is not null)
-        {
-            var department = new Department(request.Department);
-            return new Asset
-                    (
-                        request.Name,
-                        request.SerialNumber,
-                        department,
-                        request.Description,
-                        Guid.NewGuid()
-                    );
-        }
-        else
-        {
-
-            return new Asset
-            (
-                request.Name,
-                request.SerialNumber,
-                null,
-                request.Description,
-                Guid.NewGuid()
-            );
-        }
+        var department = request.Department is not null ? new CreateDepartmentRequest { Name = request.Department } : null;
+        return new Asset
+                (
+                    request.Name,
+                    request.SerialNumber,
+                    department: department?.MapToDepartment(),
+                    request.Description,
+                    Guid.NewGuid()
+                );
     }
 
     public static AssetResponse MapToAssetResponse(this Asset asset)
@@ -55,12 +40,12 @@ public static class AssetMapping
 
     public static Asset MapToAsset(this UpdateAssetRequest request, Guid id)
     {
-        var department = new Department(request.Department);
+        var department = new CreateDepartmentRequest { Name = request.Department };
         return new Asset
         (
             request.Name,
             request.SerialNumber,
-            department,
+            department: department.MapToDepartment(),
             request.Description,
             id
         );
