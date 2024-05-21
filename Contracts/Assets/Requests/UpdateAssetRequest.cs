@@ -12,5 +12,6 @@ public class UpdateAssetRequest
     [MaxLength(300, ErrorMessage = "Serial number must be max 300 characters")]
     public string? Description { get; init; }
     [Required(ErrorMessage = "Department is required")]
+    [MaxLength(30, ErrorMessage = "Name must be max 50 characters")]
     public string Department { get; init; } = default!;
 }

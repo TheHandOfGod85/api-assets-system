@@ -3,8 +3,8 @@
 public class AssetResponse
 {
     public Guid Id { get; init; }
-    public required string Name { get; init; }
-    public required string SerialNUmber { get; init; }
+    public string Name { get; init; } = default!;
+    public string SerialNumber { get; init; } = default!;
     public string? Description { get; init; }
-    public required string Department { get; init; }
+    public DepartmentResponse? Department { get; init; }
 }

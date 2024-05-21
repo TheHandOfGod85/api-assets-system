@@ -12,6 +12,7 @@ public class AssetDbContext : DbContext, IUnityOfWork
 
     }
     public DbSet<Asset> Assets { get; set; }
+    public DbSet<Department> Departments { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

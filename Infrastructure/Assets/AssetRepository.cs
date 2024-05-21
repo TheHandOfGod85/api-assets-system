@@ -24,13 +24,13 @@ public class AssetRepository(AssetDbContext _dbContext) : IAssetRepository
 
     public async Task<IEnumerable<Asset>> GetAllAsync(CancellationToken cancellationToken)
     {
-        var assets = await _dbContext.Assets.ToListAsync();
+        var assets = await _dbContext.Assets.Include(asset => asset.Department).ToListAsync();
         return assets;
     }
 
     public async Task<Asset?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
     {
-        var asset = await _dbContext.Assets.FirstOrDefaultAsync(x => x.Id == id);
+        var asset = await _dbContext.Assets.Include(asset => asset.Department).FirstOrDefaultAsync(x => x.Id == id);
         return asset;
     }
 
