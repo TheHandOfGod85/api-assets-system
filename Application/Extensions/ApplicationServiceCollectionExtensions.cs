@@ -11,7 +11,6 @@ public static class ApplicationServiceCollectionExtensions
             cfg.RegisterServicesFromAssembly(typeof(IApplicationMarker).Assembly);
 
         });
-        services.AddScoped<IDepartmentService, DepartmentService>();
         return services;
     }
 }

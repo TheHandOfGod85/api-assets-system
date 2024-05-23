@@ -24,7 +24,7 @@ public class CreateADepartmentHandler : IRequestHandler<CreateADepartment, Resul
 
     public async Task<Result<DepartmentResponse>> Handle(CreateADepartment request, CancellationToken cancellationToken)
     {
-        if (!await _unitOfWork.Departments.CheckIfIsDepartmentIsUnique(request.Name)) return Result.Failure<DepartmentResponse>(DepartmentsErrors.DepartmentNotUnique);
+        if (!await _unitOfWork.Departments.CheckIfIsDepartmentIsUniqueAsync(request.Name)) return Result.Failure<DepartmentResponse>(DepartmentsErrors.DepartmentNotUnique);
         var department = new Department(request.Name);
         var result = await _unitOfWork.Departments.CreateADepartmentAsync(department);
         return result is not null

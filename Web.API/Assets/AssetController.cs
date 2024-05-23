@@ -32,14 +32,14 @@ public class AssetController(
     }
 
     [HttpGet(Endpoints.Assets.GetAllTheAssets)]
-    public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
+    public async Task<IActionResult> GetAllTheAssets(CancellationToken cancellationToken)
     {
         Result<IEnumerable<AssetResponse>> result = await mediator.Send(new GetAllTheAssets(), cancellationToken);
         return result.IsSuccess ? Ok(result.Value) : result.ToProblemDetails();
     }
 
     [HttpPatch(Endpoints.Assets.UpdateTheAssetBasicInfoById)]
-    public async Task<IActionResult> Update(
+    public async Task<IActionResult> UpdateAnAssetById(
         [FromRoute] Guid id,
         [FromBody] UpdateTheAssetBasicInfo request,
         CancellationToken cancellationToken)
@@ -52,7 +52,7 @@ public class AssetController(
     }
 
     [HttpDelete(Endpoints.Assets.DeleteAnAsset)]
-    public async Task<IActionResult> Delete(
+    public async Task<IActionResult> DeleteAnAsset(
         [FromRoute] Guid id,
         CancellationToken cancellationToken)
     {

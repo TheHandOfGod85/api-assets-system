@@ -18,25 +18,27 @@ public class DepartmentRepository(AssetDbContext dbContext) : IDepartmentReposit
         };
     }
 
-    public async Task<bool> Exists(string name, CancellationToken cancellationToken = default)
+    public async Task<bool> CheckIfADepartmentExistsAsync(string name)
     {
-        return await _dbContext.Departments.AnyAsync(d => d.Name == name, cancellationToken);
+        return await _dbContext.Departments.AnyAsync(d => d.Name == name);
     }
 
-    public async Task<IEnumerable<Department>> GetAllAsync(CancellationToken cancellationToken)
+    public async Task<IEnumerable<DepartmentResponse>> GetAllDepartmentsAsync()
     {
-        var departments = await _dbContext.Departments.ToListAsync(cancellationToken);
-        return departments;
+        return await _dbContext.Departments.Select(department => new DepartmentResponse
+        {
+            Name = department.Name,
+
+        }).ToListAsync();
     }
 
-    public async Task<Department?> GetByNameAsync(string name, CancellationToken cancellationToken = default)
+    public async Task<Department?> GetDepartmentByNameAsync(string name)
     {
-        var department = await _dbContext.Departments.FirstOrDefaultAsync(d => d.Name == name, cancellationToken);
-        return department;
+        return await _dbContext.Departments.FirstOrDefaultAsync(d => d.Name == name);
     }
 
-    public async Task<bool> CheckIfIsDepartmentIsUnique(string name, CancellationToken cancellationToken = default)
+    public async Task<bool> CheckIfIsDepartmentIsUniqueAsync(string name)
     {
-        return !await _dbContext.Departments.AnyAsync(d => d.Name == name, cancellationToken);
+        return !await _dbContext.Departments.AnyAsync(d => d.Name == name);
     }
 }

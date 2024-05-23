@@ -10,8 +10,8 @@ public class DepartmentController(IMediator mediator) : ControllerBase
 {
 
 
-    [HttpPost(Endpoints.Departments.Create)]
-    public async Task<IActionResult> Create(
+    [HttpPost(Endpoints.Departments.CreateADepartment)]
+    public async Task<IActionResult> CreateADepartment(
         [FromBody] CreateADepartment request,
         CancellationToken cancellationToken)
     {
@@ -19,11 +19,10 @@ public class DepartmentController(IMediator mediator) : ControllerBase
         return result.IsSuccess ? Ok(result.Value) : result.ToProblemDetails();
     }
 
-    [HttpGet(Endpoints.Departments.GetAll)]
-    public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
+    [HttpGet(Endpoints.Departments.GetAllDepartments)]
+    public async Task<IActionResult> GetAllDepartments(CancellationToken cancellationToken)
     {
-        Result<IEnumerable<Department>> result = await _departmentService.GetAllDepartmentsAsync(cancellationToken);
-        var departmentRespone = result.Value.MapToDepartmentsResponse();
-        return result.IsSuccess ? Ok(departmentRespone) : result.ToProblemDetails();
+        Result<IEnumerable<DepartmentResponse>> result = await mediator.Send(new GetAllDepartments(), cancellationToken);
+        return result.IsSuccess ? Ok(result.Value) : result.ToProblemDetails();
     }
 }

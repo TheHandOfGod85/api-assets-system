@@ -45,8 +45,8 @@ public class CreateAnAssetHandler : IRequestHandler<CreateAnAsset, Result<AssetR
         }
         else
         {
-            if (!await _unitOfWork.Departments.Exists(request.Department, cancellationToken)) return Result.Failure<AssetResponse>(DepartmentsErrors.NotFound(request.Department));
-            var department = await _unitOfWork.Departments.GetByNameAsync(request.Department);
+            if (!await _unitOfWork.Departments.CheckIfADepartmentExistsAsync(request.Department)) return Result.Failure<AssetResponse>(DepartmentsErrors.NotFound(request.Department));
+            var department = await _unitOfWork.Departments.GetDepartmentByNameAsync(request.Department);
             var newAsset = new Asset
             (
                 request.Name,

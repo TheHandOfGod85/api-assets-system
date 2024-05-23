@@ -17,7 +17,7 @@ public static class Endpoints
     public static class Departments
     {
         private const string Base = $"{ApiBase}/departments";
-        public const string Create = Base;
-        public const string GetAll = Base;
+        public const string CreateADepartment = Base;
+        public const string GetAllDepartments = Base;
     }
 }
