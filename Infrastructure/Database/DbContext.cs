@@ -1,11 +1,10 @@
 ﻿using System.Reflection;
-using Application;
 using Domain;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure;
 
-public class AssetDbContext : DbContext, IUnityOfWork
+public class AssetDbContext : DbContext
 {
     public AssetDbContext(DbContextOptions options) : base(options)
     {

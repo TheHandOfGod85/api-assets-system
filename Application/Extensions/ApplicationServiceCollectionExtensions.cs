@@ -6,7 +6,11 @@ public static class ApplicationServiceCollectionExtensions
 {
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
-        services.AddScoped<IAssetService, AssetService>();
+        services.AddMediatR(cfg =>
+        {
+            cfg.RegisterServicesFromAssembly(typeof(IApplicationMarker).Assembly);
+
+        });
         services.AddScoped<IDepartmentService, DepartmentService>();
         return services;
     }

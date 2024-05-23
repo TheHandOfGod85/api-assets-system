@@ -8,9 +8,14 @@ public class DepartmentRepository(AssetDbContext dbContext) : IDepartmentReposit
 {
     private readonly AssetDbContext _dbContext = dbContext;
 
-    public void CreateAsync(Department department, CancellationToken cancellationToken)
+    public async Task<DepartmentResponse> CreateADepartmentAsync(Department department)
     {
         _dbContext.Departments.Add(department);
+        await _dbContext.SaveChangesAsync();
+        return new DepartmentResponse
+        {
+            Name = department.Name,
+        };
     }
 
     public async Task<bool> Exists(string name, CancellationToken cancellationToken = default)
@@ -30,7 +35,7 @@ public class DepartmentRepository(AssetDbContext dbContext) : IDepartmentReposit
         return department;
     }
 
-    public async Task<bool> IsDepartmentUnique(string name, CancellationToken cancellationToken = default)
+    public async Task<bool> CheckIfIsDepartmentIsUnique(string name, CancellationToken cancellationToken = default)
     {
         return !await _dbContext.Departments.AnyAsync(d => d.Name == name, cancellationToken);
     }

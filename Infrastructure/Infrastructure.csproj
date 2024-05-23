@@ -20,7 +20,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Abstractions\" />
     <Folder Include="Assets\" />
+    <Folder Include="Extensions\" />
   </ItemGroup>
 
 </Project>

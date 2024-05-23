@@ -25,19 +25,21 @@ public class Asset
     private Asset() { }
 
     public void UpdateAsset(
-        Guid id,
         string name,
-        string serialNumber,
-        Department? department,
         string? description)
     {
-        Id = id;
         Name = name;
-        SerialNumber = serialNumber;
-        Department = department;
         Description = description;
     }
+    public void ChangeSerialNumber(string serialNumber)
+    {
+        SerialNumber = serialNumber;
+    }
     public void AddDepartment(Department? department)
+    {
+        Department = department;
+    }
+    public void ChangeDepartment(Department department)
     {
         Department = department;
     }
