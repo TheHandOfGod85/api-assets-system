@@ -22,6 +22,6 @@ public class DeleteAnAssetHandler : IRequestHandler<DeleteAnAsset, Result<bool>>
     public async Task<Result<bool>> Handle(DeleteAnAsset request, CancellationToken cancellationToken)
     {
         var result = await _unitOfWork.Assets.DeleteAssetByIdAsync(request.Id);
-        return result ? Result.Success<bool>(result) : Result.Failure<bool>(AssetErrors.NotFound(request.Id));
+        return result ? Result.Success(result) : Result.Failure<bool>(AssetErrors.NotFound(request.Id));
     }
 }

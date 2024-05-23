@@ -12,6 +12,7 @@ public static class Endpoints
         public const string GetAllTheAssets = Base;
         public const string UpdateTheAssetBasicInfoById = $"{Base}/{{id:guid}}";
         public const string DeleteAnAsset = $"{Base}/{{id:guid}}";
+        public const string ChangeSerialNumber = $"{Base}/serialNumber/{{id:guid}}";
     }
 
     public static class Departments

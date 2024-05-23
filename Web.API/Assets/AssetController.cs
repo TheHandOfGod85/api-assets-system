@@ -59,4 +59,13 @@ public class AssetController(
         Result<bool> result = await mediator.Send(new DeleteAnAsset { Id = id }, cancellationToken);
         return result.IsSuccess ? NoContent() : result.ToProblemDetails();
     }
+    [HttpPatch(Endpoints.Assets.ChangeSerialNumber)]
+    public async Task<IActionResult> ChangeSerialNumber([FromRoute] Guid id, [FromBody] ChangeSerialNumber request, CancellationToken cancellationToken)
+    {
+        request.Id = id;
+        Result<ChangeSerialNumberInfo?> result = await mediator.Send(request, cancellationToken);
+        return result.IsSuccess
+        ? NoContent()
+        : result.ToProblemDetails();
+    }
 }

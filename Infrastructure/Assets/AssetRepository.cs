@@ -30,7 +30,7 @@ public class AssetRepository(AssetDbContext _dbContext) : IAssetRepository
         return result > 0;
     }
 
-    public async Task<bool> CheckIfTheAssetExistsById(Guid id, CancellationToken cancellationToken)
+    public async Task<bool> CheckIfTheAssetExistsByIdAsync(Guid id)
     {
         return await _dbContext.Assets.AnyAsync(x => x.Id == id);
     }
@@ -71,11 +71,6 @@ public class AssetRepository(AssetDbContext _dbContext) : IAssetRepository
     {
         var asset = await _dbContext.Assets.Where(asset => asset.Id == id).FirstOrDefaultAsync();
         if (asset == null) return null;
-        // if (serialNumber != asset.SerialNumber)
-        // {
-        //     var result = !await _dbContext.Assets.AnyAsync(x => x.SerialNumber == serialNumber);
-        //     if (result) return Result.Failure<AssetBasicInfo?>(AssetErrors.SerialNumberNotUnique);
-        // }
         asset.UpdateAsset
         (
             name,
@@ -93,5 +88,26 @@ public class AssetRepository(AssetDbContext _dbContext) : IAssetRepository
     public async Task<bool> CheckIfSerialNumberIsUniqueAsync(string serialNumber)
     {
         return !await _dbContext.Assets.AnyAsync(x => x.SerialNumber == serialNumber);
+    }
+
+    public async Task<ChangeSerialNumberInfo?> ChangeSerialNumberAsync(Guid id, string serialNumber)
+    {
+        var asset = await _dbContext.Assets.Where(asset => asset.Id == id).FirstOrDefaultAsync();
+        if (asset == null) return null;
+        if (serialNumber != asset.SerialNumber)
+        {
+            var result = !await _dbContext.Assets.AnyAsync(x => x.SerialNumber == serialNumber);
+            if (!result) throw new ArgumentException("Serial number must be unique");
+        }
+        asset.ChangeSerialNumber
+        (
+            serialNumber
+        );
+        _dbContext.Update(asset);
+        await _dbContext.SaveChangesAsync();
+        return new ChangeSerialNumberInfo
+        (
+            serialNumber
+        );
     }
 }

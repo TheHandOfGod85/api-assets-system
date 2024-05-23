@@ -11,5 +11,6 @@ public interface IAssetRepository
     Task<AssetBasicInfo?> UpdateTheAssetBasicInfoByIdAsync(Guid id, string name, string? description);
     Task<bool> CheckIfSerialNumberIsUniqueAsync(string serialNumber);
     Task<bool> DeleteAssetByIdAsync(Guid id);
-    Task<bool> CheckIfTheAssetExistsById(Guid id, CancellationToken cancellationToken = default);
+    Task<bool> CheckIfTheAssetExistsByIdAsync(Guid id);
+    Task<ChangeSerialNumberInfo?> ChangeSerialNumberAsync(Guid id, string serialNumber);
 }
