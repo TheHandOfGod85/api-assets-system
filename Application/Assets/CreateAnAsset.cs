@@ -51,7 +51,7 @@ public class CreateAnAssetHandler : IRequestHandler<CreateAnAsset, Result<AssetR
             (
                 request.Name,
                 request.SerialNumber,
-                department,
+                department?.MapToDepartment(),
                 request.Description
             );
             var result = await _unitOfWork.Assets.CreateAnAssetAsync(newAsset);

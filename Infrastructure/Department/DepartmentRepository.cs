@@ -32,9 +32,13 @@ public class DepartmentRepository(AssetDbContext dbContext) : IDepartmentReposit
         }).ToListAsync();
     }
 
-    public async Task<Department?> GetDepartmentByNameAsync(string name)
+    public async Task<DepartmentResponse?> GetDepartmentByNameAsync(string name)
     {
-        return await _dbContext.Departments.FirstOrDefaultAsync(d => d.Name == name);
+        return await _dbContext.Departments.Select(department => new DepartmentResponse
+        {
+            Name = department.Name
+        }
+        ).FirstOrDefaultAsync(d => d.Name == name);
     }
 
     public async Task<bool> CheckIfIsDepartmentIsUniqueAsync(string name)
