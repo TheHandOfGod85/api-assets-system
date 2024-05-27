@@ -1,5 +1,4 @@
 using Application;
-using Contracts;
 using Infrastructure;
 using Web.API;
 var builder = WebApplication.CreateBuilder(args);
@@ -7,7 +6,6 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 var config = builder.Configuration;
 builder.Services.AddControllers();
-builder.Services.AddContracts();
 builder.Services.AddApplication();
 builder.Services.AddDatabase(config["Database:ConnectionString"]!);
 builder.Services.AddInfrastructure();

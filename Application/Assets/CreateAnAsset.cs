@@ -4,7 +4,7 @@ using MediatR;
 using SharedKernel;
 
 namespace Application;
-public class CreateAnAsset() : IRequest<Result<AssetResponse>>
+public class CreateAnAsset : IRequest<Result<AssetResponse>>
 {
     [Required(ErrorMessage = "Name is required")]
     public string Name { get; init; } = default!;
