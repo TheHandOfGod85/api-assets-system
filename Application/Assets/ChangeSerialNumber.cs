@@ -29,10 +29,15 @@ public class ChangeSerialNumberHandler : IRequestHandler<ChangeSerialNumber, Res
             if (result is null) return Result.Failure<ChangeSerialNumberInfo?>(AssetErrors.NotFound(request.Id));
             return Result.Success<ChangeSerialNumberInfo?>(result);
         }
-        catch (Exception ex)
+        catch (SerialNumberIsUniqueExceptions ex)
         {
             Console.WriteLine(ex.Message);
             return Result.Failure<ChangeSerialNumberInfo?>(AssetErrors.SerialNumberNotUnique);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            throw;
         }
     }
 }

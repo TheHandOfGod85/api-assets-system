@@ -97,7 +97,7 @@ public class AssetRepository(AssetDbContext _dbContext) : IAssetRepository
         if (serialNumber != asset.SerialNumber)
         {
             var result = !await _dbContext.Assets.AnyAsync(x => x.SerialNumber == serialNumber);
-            if (!result) throw new ArgumentException("Serial number must be unique");
+            if (!result) throw new SerialNumberIsUniqueExceptions("Serial number must be unique");
         }
         asset.ChangeSerialNumber
         (
