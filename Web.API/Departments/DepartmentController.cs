@@ -1,5 +1,4 @@
 ﻿using Application;
-using Domain;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using SharedKernel;
@@ -24,5 +23,14 @@ public class DepartmentController(IMediator mediator) : ControllerBase
     {
         Result<IEnumerable<DepartmentResponse>> result = await mediator.Send(new GetAllDepartments(), cancellationToken);
         return result.IsSuccess ? Ok(result.Value) : result.ToProblemDetails();
+    }
+
+    [HttpDelete(Endpoints.Departments.DeleteADepartmentByName)]
+    public async Task<IActionResult> DeleteADepartmentByName(
+        [FromRoute] string name,
+        CancellationToken cancellationToken)
+    {
+        Result result = await mediator.Send(new DeleteADepartmentByName { Name = name }, cancellationToken);
+        return result.IsSuccess ? NoContent() : result.ToProblemDetails();
     }
 }

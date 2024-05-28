@@ -20,5 +20,6 @@ public static class Endpoints
         private const string Base = $"{ApiBase}/departments";
         public const string CreateADepartment = Base;
         public const string GetAllDepartments = Base;
+        public const string DeleteADepartmentByName = $"{Base}/{{name}}";
     }
 }

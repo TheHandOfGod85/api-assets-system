@@ -35,17 +35,22 @@ public class DepartmentRepository(AssetDbContext dbContext) : IDepartmentReposit
         }).ToListAsync();
     }
 
-    public async Task<DepartmentResponse?> GetDepartmentByNameAsync(string name)
+    public async Task<Department?> GetDepartmentByNameAsync(string name)
     {
-        return await _dbContext.Departments.Select(department => new DepartmentResponse
-        {
-            Name = department.Name
-        }
-        ).FirstOrDefaultAsync(d => d.Name == name);
+        return await _dbContext.Departments.FirstOrDefaultAsync(d => d.Name == name);
     }
 
     public async Task<bool> CheckIfIsDepartmentIsUniqueAsync(string name)
     {
         return !await _dbContext.Departments.AnyAsync(d => d.Name == name);
+    }
+
+    public async Task<bool> DeleteADepartmentByNameAsync(string name)
+    {
+        var department = await _dbContext.Departments.FirstOrDefaultAsync(dpt => dpt.Name == name);
+        if (department is null) return false;
+        _dbContext.Remove(department);
+        var result = await _dbContext.SaveChangesAsync();
+        return result > 0;
     }
 }
