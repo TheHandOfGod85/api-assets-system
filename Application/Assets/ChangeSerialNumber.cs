@@ -8,7 +8,7 @@ namespace Application;
 public class ChangeSerialNumber : IRequest<Result<ChangeSerialNumberInfo?>>
 {
     public Guid Id { get; set; }
-    [Required]
+    [Required(ErrorMessage = "Serial number is required")]
     public string SerialNumber { get; set; } = default!;
 }
 

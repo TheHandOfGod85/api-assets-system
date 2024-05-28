@@ -4,7 +4,7 @@ namespace Application;
 
 public interface IDepartmentRepository
 {
-    Task<DepartmentResponse> CreateADepartmentAsync(Department department);
+    Task<DepartmentResponse?> CreateADepartmentAsync(Department department);
     Task<IEnumerable<DepartmentResponse>> GetAllDepartmentsAsync();
     Task<bool> CheckIfIsDepartmentIsUniqueAsync(string name);
     Task<DepartmentResponse?> GetDepartmentByNameAsync(string name);

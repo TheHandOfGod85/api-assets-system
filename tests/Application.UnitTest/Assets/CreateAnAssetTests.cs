@@ -28,7 +28,8 @@ public class CreateAnAssetTests
     public async Task Handle_Should_ReturnError_WhenSerialNumberIsUnique()
     {
         //arrange
-        unitOfWorkMock.Assets.CheckIfSerialNumberIsUniqueAsync(Arg.Is<string>(x => x == Command.SerialNumber)).Returns(false);
+        unitOfWorkMock.Assets.CheckIfSerialNumberIsUniqueAsync(Arg.Is<string>(x => x == Command.SerialNumber))
+        .Returns(false);
         //act
         Result result = await _handler.Handle(Command, default);
         //assert
@@ -38,7 +39,8 @@ public class CreateAnAssetTests
     public async Task Handle_Should_ReturnSuccessIfDepartmentIsNull()
     {
         //arrange
-        unitOfWorkMock.Assets.CheckIfSerialNumberIsUniqueAsync(Arg.Is<string>(x => x == Command.SerialNumber)).Returns(true);
+        unitOfWorkMock.Assets.CheckIfSerialNumberIsUniqueAsync(Arg.Is<string>(x => x == Command.SerialNumber))
+        .Returns(true);
         CreateAnAsset command = new CreateAnAsset
         {
             Name = "Turbo",
@@ -55,8 +57,10 @@ public class CreateAnAssetTests
     public async Task Handle_Should_ReturnErrorIfDepartmentIsNotNull_DepartmentNotExists()
     {
         //arrange
-        unitOfWorkMock.Assets.CheckIfSerialNumberIsUniqueAsync(Arg.Is<string>(x => x == Command.SerialNumber)).Returns(true);
-        unitOfWorkMock.Departments.CheckIfADepartmentExistsAsync(Arg.Is<string>(x => x == Command.Department)).Returns(false);
+        unitOfWorkMock.Assets.CheckIfSerialNumberIsUniqueAsync(Arg.Is<string>(x => x == Command.SerialNumber))
+        .Returns(true);
+        unitOfWorkMock.Departments.CheckIfADepartmentExistsAsync(Arg.Is<string>(x => x == Command.Department))
+        .Returns(false);
         CreateAnAsset command = new CreateAnAsset
         {
             Name = "Turbo",
@@ -73,8 +77,10 @@ public class CreateAnAssetTests
     public async Task Handle_Should_ReturnSuccessIfDepartmentExists()
     {
         //arrange
-        unitOfWorkMock.Assets.CheckIfSerialNumberIsUniqueAsync(Arg.Is<string>(x => x == Command.SerialNumber)).Returns(true);
-        unitOfWorkMock.Departments.CheckIfADepartmentExistsAsync(Arg.Is<string>(x => x == Command.Department)).Returns(true);
+        unitOfWorkMock.Assets.CheckIfSerialNumberIsUniqueAsync(Arg.Is<string>(x => x == Command.SerialNumber))
+        .Returns(true);
+        unitOfWorkMock.Departments.CheckIfADepartmentExistsAsync(Arg.Is<string>(x => x == Command.Department))
+        .Returns(true);
         CreateAnAsset command = new CreateAnAsset
         {
             Name = "Turbo",
@@ -91,8 +97,10 @@ public class CreateAnAssetTests
     public async Task Handle_Should_Call_GetDepartmentByNameAsync_WhenDepartmentExists()
     {
         //arrange
-        unitOfWorkMock.Assets.CheckIfSerialNumberIsUniqueAsync(Arg.Is<string>(x => x == Command.SerialNumber)).Returns(true);
-        unitOfWorkMock.Departments.CheckIfADepartmentExistsAsync(Arg.Is<string>(x => x == Command.Department)).Returns(true);
+        unitOfWorkMock.Assets.CheckIfSerialNumberIsUniqueAsync(Arg.Is<string>(x => x == Command.SerialNumber))
+        .Returns(true);
+        unitOfWorkMock.Departments.CheckIfADepartmentExistsAsync(Arg.Is<string>(x => x == Command.Department))
+        .Returns(true);
         CreateAnAsset command = new CreateAnAsset
         {
             Name = "Turbo",
@@ -107,7 +115,7 @@ public class CreateAnAssetTests
     }
 
     [Fact]
-    public void Should_Have_Error_When_Name_Is_Empty()
+    public void Command_Should_Have_Error_When_Name_Is_Empty()
     {
         var model = new CreateAnAsset { Name = string.Empty, SerialNumber = "SN12345" };
         var result = ValidatorHelper.ValidateModel(model);

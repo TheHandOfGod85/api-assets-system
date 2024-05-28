@@ -29,7 +29,7 @@ public class CreateADepartmentHandler : IRequestHandler<CreateADepartment, Resul
         var result = await _unitOfWork.Departments.CreateADepartmentAsync(department);
         return result is not null
         ? Result.Success(result)
-        : Result.Failure<DepartmentResponse>(DepartmentsErrors.NotFound(request.Name));
+        : Result.Failure<DepartmentResponse>(DepartmentsErrors.DepartmentCreationError);
     }
 }
 

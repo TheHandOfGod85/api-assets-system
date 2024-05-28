@@ -9,5 +9,7 @@ public static class DepartmentsErrors
     );
     public static Error NotFound(string name) => Error.NotFound(
         "Department.NotFound", $"The department with the name = '{name}' was not found, please create first a department before assign it");
-
+    public static readonly Error DepartmentCreationError = Error.Conflict(
+            "Department.NotCreated", "There is a problem creating the department"
+        );
 }

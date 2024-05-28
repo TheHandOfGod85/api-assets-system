@@ -8,14 +8,17 @@ public class DepartmentRepository(AssetDbContext dbContext) : IDepartmentReposit
 {
     private readonly AssetDbContext _dbContext = dbContext;
 
-    public async Task<DepartmentResponse> CreateADepartmentAsync(Department department)
+    public async Task<DepartmentResponse?> CreateADepartmentAsync(Department department)
     {
         _dbContext.Departments.Add(department);
-        await _dbContext.SaveChangesAsync();
-        return new DepartmentResponse
+        var result = await _dbContext.SaveChangesAsync();
+
+        return result > 0
+        ? new DepartmentResponse
         {
             Name = department.Name,
-        };
+        }
+        : null;
     }
 
     public async Task<bool> CheckIfADepartmentExistsAsync(string name)
