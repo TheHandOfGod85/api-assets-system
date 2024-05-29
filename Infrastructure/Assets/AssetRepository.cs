@@ -25,7 +25,7 @@ public class AssetRepository(AssetDbContext _dbContext) : IAssetRepository
     {
         var asset = await _dbContext.Assets.Where(asset => asset.Id == id).FirstOrDefaultAsync();
         if (asset is null) return false;
-        _dbContext.Remove(asset);
+        _dbContext.Assets.Remove(asset);
         var result = await _dbContext.SaveChangesAsync();
         return result > 0;
     }
@@ -76,7 +76,7 @@ public class AssetRepository(AssetDbContext _dbContext) : IAssetRepository
             name,
             description
         );
-        _dbContext.Update(asset);
+        _dbContext.Assets.Update(asset);
         await _dbContext.SaveChangesAsync();
         return new AssetBasicInfo
         (
@@ -103,11 +103,26 @@ public class AssetRepository(AssetDbContext _dbContext) : IAssetRepository
         (
             serialNumber
         );
-        _dbContext.Update(asset);
+        _dbContext.Assets.Update(asset);
         await _dbContext.SaveChangesAsync();
         return new ChangeSerialNumberInfo
         (
             serialNumber
+        );
+    }
+
+    public async Task<UpsertDepartmentInfo?> UpsertDepartmentAsync(Guid id, string departmentName)
+    {
+        var asset = await _dbContext.Assets.Where(asset => asset.Id == id).FirstOrDefaultAsync();
+        if (asset is null) return null;
+        var department = await _dbContext.Departments.Where(dpt => dpt.Name == departmentName).FirstOrDefaultAsync();
+        if (department is null) throw new DepartmentNotFoundException($"Department {departmentName} not found!");
+        asset.UpsertDepartment(department);
+        _dbContext.Assets.Update(asset);
+        await _dbContext.SaveChangesAsync();
+        return new UpsertDepartmentInfo
+        (
+            departmentName
         );
     }
 }

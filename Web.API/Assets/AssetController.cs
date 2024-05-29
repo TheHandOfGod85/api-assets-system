@@ -68,4 +68,16 @@ public class AssetController(
         ? NoContent()
         : result.ToProblemDetails();
     }
+    [HttpPatch(Endpoints.Assets.UpsertDepartment)]
+    public async Task<IActionResult> UpsertDepartment(
+        [FromRoute] Guid id,
+        [FromBody] UpsertDepartment request,
+        CancellationToken cancellationToken)
+    {
+        request.Id = id;
+        Result<UpsertDepartmentInfo?> result = await mediator.Send(request, cancellationToken);
+        return result.IsSuccess
+        ? Ok(result.Value)
+        : result.ToProblemDetails();
+    }
 }

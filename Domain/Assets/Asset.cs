@@ -35,11 +35,7 @@ public class Asset
     {
         SerialNumber = serialNumber;
     }
-    public void AddDepartment(Department? department)
-    {
-        Department = department;
-    }
-    public void ChangeDepartment(Department department)
+    public void UpsertDepartment(Department? department)
     {
         Department = department;
     }

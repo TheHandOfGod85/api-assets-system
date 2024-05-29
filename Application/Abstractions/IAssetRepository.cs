@@ -13,4 +13,5 @@ public interface IAssetRepository
     Task<bool> DeleteAssetByIdAsync(Guid id);
     Task<bool> CheckIfTheAssetExistsByIdAsync(Guid id);
     Task<ChangeSerialNumberInfo?> ChangeSerialNumberAsync(Guid id, string serialNumber);
+    Task<UpsertDepartmentInfo?> UpsertDepartmentAsync(Guid id, string departmentName);
 }
