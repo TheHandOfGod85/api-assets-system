@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AssetDbContext))]
-    [Migration("20240529170043_Init")]
+    [Migration("20240529173708_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -31,6 +31,9 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("DepartmentName")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
@@ -44,6 +47,8 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("DepartmentName");
+
                     b.HasIndex("SerialNumber")
                         .IsUnique();
 
@@ -55,31 +60,23 @@ namespace Infrastructure.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<Guid?>("AssetId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Name");
-
-                    b.HasIndex("AssetId")
-                        .IsUnique()
-                        .HasFilter("[AssetId] IS NOT NULL");
 
                     b.ToTable("Departments");
                 });
 
-            modelBuilder.Entity("Domain.Department", b =>
-                {
-                    b.HasOne("Domain.Asset", "Asset")
-                        .WithOne("Department")
-                        .HasForeignKey("Domain.Department", "AssetId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
-                    b.Navigation("Asset");
-                });
-
             modelBuilder.Entity("Domain.Asset", b =>
                 {
+                    b.HasOne("Domain.Department", "Department")
+                        .WithMany("Assets")
+                        .HasForeignKey("DepartmentName");
+
                     b.Navigation("Department");
+                });
+
+            modelBuilder.Entity("Domain.Department", b =>
+                {
+                    b.Navigation("Assets");
                 });
 #pragma warning restore 612, 618
         }

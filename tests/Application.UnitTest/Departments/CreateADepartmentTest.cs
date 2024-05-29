@@ -51,20 +51,21 @@ public class CreateADepartmentTest
         //assert
         result.Error.Should().Be(DepartmentsErrors.DepartmentCreationError);
     }
-    // [Fact]
-    // public async Task Handler_Should_Return_DepartmentResponse_When_Ok_Create_A_Department()
-    // {
-    //     //arrange
-    //     var request = new CreateADepartment { Name = "Fruit" };
-    //     var departmentRespone = new DepartmentResponse { Name = request.Name };
-    //     unitOfWorkMock.Departments.CheckIfIsDepartmentIsUniqueAsync(request.Name)
-    //     .Returns(true);
-    //     unitOfWorkMock.Departments.CreateADepartmentAsync(departmentRespone.MapToDepartment())
-    //     .Returns(Task.FromResult<DepartmentResponse?>(departmentRespone));
-    //     //act
-    //     var result = await _handler.Handle(request, default);
-    //     //assert
-    //     result.IsSuccess.Should().BeTrue();
-    //     result.Value.Should().BeEquivalentTo(departmentRespone);
-    // }
+    //[Fact]
+    //public async Task Handler_Should_Return_DepartmentResponse_When_Ok_Create_A_Department()
+    //{
+    //    //arrange
+    //    var request = new CreateADepartment { Name = "Fruit" };
+    //    var departmentRespone = new DepartmentResponse { Name = request.Name };
+    //    var department = new Department(name: request.Name);
+    //    unitOfWorkMock.Departments.CheckIfIsDepartmentIsUniqueAsync(request.Name)
+    //    .Returns(true);
+    //    unitOfWorkMock.Departments.CreateADepartmentAsync(department)
+    //    .Returns(Task.FromResult<DepartmentResponse?>(departmentRespone));
+    //    //act
+    //    var result = await _handler.Handle(request, default);
+    //    //assert
+    //    result.IsSuccess.Should().BeTrue();
+    //    result.Value.Should().BeEquivalentTo(departmentRespone);
+    //}
 }

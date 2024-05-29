@@ -30,7 +30,7 @@ public class DeleteADepartmentByNameTest
         result.Error.Should().BeEquivalentTo(DepartmentsErrors.NotFound(name));
     }
     [Fact]
-    public async Task Handler_Should_Return_Success_If_Department_Was_Found()
+    public async Task Handler_Should_Return_Success()
     {
         //arrange
         var name = "Fruit";

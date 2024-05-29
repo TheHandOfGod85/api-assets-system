@@ -2,12 +2,13 @@
 
 public class Department
 {
+    private readonly List<Asset>? _assets = new();
     public string Name { get; private set; } = default!;
-    public Guid? AssetId { get; private set; }
-    public Asset? Asset { get; private set; }
-    public Department(string name)
+    public IReadOnlyList<Asset>? Assets => _assets?.AsReadOnly();
+    public Department(string name, List<Asset>? assets = null)
     {
         Name = name;
+        _assets = assets;
     }
 
     private Department() { }

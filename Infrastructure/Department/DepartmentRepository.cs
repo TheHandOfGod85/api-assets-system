@@ -28,9 +28,10 @@ public class DepartmentRepository(AssetDbContext dbContext) : IDepartmentReposit
 
     public async Task<IEnumerable<DepartmentResponse>> GetAllDepartmentsAsync()
     {
-        return await _dbContext.Departments.Select(department => new DepartmentResponse
+        return await _dbContext.Departments.Include(dpt => dpt.Assets).Select(department => new DepartmentResponse
         {
             Name = department.Name,
+            AssetName = department.Assets.Select(asset => asset.Name).ToList(),
 
         }).ToListAsync();
     }
