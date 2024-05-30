@@ -50,7 +50,7 @@ public class UpsertDepartmentTest
         result.Error.Should().Be(DepartmentsErrors.NotFound(request.DepartmentName));
     }
     [Fact]
-    public async Task handler_Should_Return_UpsertDepartmentInfo_Success()
+    public async Task Handler_Should_Return_UpsertDepartmentInfo_Success()
     {
         //arrange
         var request = new UpsertDepartment { Id = Guid.NewGuid(), DepartmentName = "prep" };
