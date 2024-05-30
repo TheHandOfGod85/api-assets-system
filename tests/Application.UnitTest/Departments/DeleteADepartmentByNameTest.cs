@@ -1,6 +1,7 @@
 ﻿using Domain;
 using FluentAssertions;
 using NSubstitute;
+using NSubstitute.ExceptionExtensions;
 
 namespace Application.UnitTest;
 
@@ -28,6 +29,21 @@ public class DeleteADepartmentByNameTest
         //assert
         result.IsSuccess.Should().BeFalse();
         result.Error.Should().BeEquivalentTo(DepartmentsErrors.NotFound(name));
+    }
+    [Fact]
+    public async Task Handler_Should_Return_Error_If_Cannot_Delete()
+    {
+        //arrange
+        var cannotDeleteException = new CannotDeleteDepartmentException("Cannot delete");
+        var name = "Fruit";
+        var request = new DeleteADepartmentByName { Name = name };
+        unitOfWork.Departments.DeleteADepartmentByNameAsync(name)
+        .ThrowsAsyncForAnyArgs(cannotDeleteException);
+        //act
+        var result = await _handler.Handle(request, default);
+        //assert
+        result.IsSuccess.Should().BeFalse();
+        result.Error.Should().BeEquivalentTo(DepartmentsErrors.CannotDelete(name));
     }
     [Fact]
     public async Task Handler_Should_Return_Success()

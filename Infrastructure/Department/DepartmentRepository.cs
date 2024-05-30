@@ -48,8 +48,12 @@ public class DepartmentRepository(AssetDbContext dbContext) : IDepartmentReposit
 
     public async Task<bool> DeleteADepartmentByNameAsync(string name)
     {
-        var department = await _dbContext.Departments.FirstOrDefaultAsync(dpt => dpt.Name == name);
+        var department = await _dbContext.Departments
+            .Include(dpt => dpt.Assets)
+            .FirstOrDefaultAsync(dpt => dpt.Name == name);
         if (department is null) return false;
+        var assets = department.Assets?.ToList();
+        if (assets.Count() > 0) throw new CannotDeleteDepartmentException("The department cannot be deleted as it is assigned to assets, consider changing name instead");
         _dbContext.Remove(department);
         var result = await _dbContext.SaveChangesAsync();
         return result > 0;

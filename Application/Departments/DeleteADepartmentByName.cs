@@ -22,7 +22,20 @@ public class DeleteADepartmentByNameHandler : IRequestHandler<DeleteADepartmentB
 
     public async Task<Result> Handle(DeleteADepartmentByName request, CancellationToken cancellationToken)
     {
-        var result = await _unitOfWork.Departments.DeleteADepartmentByNameAsync(request.Name);
-        return result ? Result.Success() : Result.Failure(DepartmentsErrors.NotFound(request.Name));
+        try
+        {
+            var result = await _unitOfWork.Departments.DeleteADepartmentByNameAsync(request.Name);
+            return result ? Result.Success() : Result.Failure(DepartmentsErrors.NotFound(request.Name));
+        }
+        catch (CannotDeleteDepartmentException)
+        {
+            return Result.Failure<bool>(DepartmentsErrors.CannotDelete(request.Name));
+
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            throw;
+        }
     }
 }
