@@ -31,7 +31,7 @@ public class DepartmentRepository(AssetDbContext dbContext) : IDepartmentReposit
         return await _dbContext.Departments.Include(dpt => dpt.Assets).Select(department => new DepartmentResponse
         {
             Name = department.Name,
-            AssetName = department.Assets.Select(asset => asset.Name).ToList(),
+            AssetNames = department.Assets.Select(asset => asset.Name).ToList(),
 
         }).ToListAsync();
     }
@@ -51,6 +51,32 @@ public class DepartmentRepository(AssetDbContext dbContext) : IDepartmentReposit
         var department = await _dbContext.Departments.FirstOrDefaultAsync(dpt => dpt.Name == name);
         if (department is null) return false;
         _dbContext.Remove(department);
+        var result = await _dbContext.SaveChangesAsync();
+        return result > 0;
+    }
+
+    public async Task<bool> ChangeDepartmentNameAsync(string? name, string newName)
+    {
+        var department = await _dbContext.Departments
+                 .Include(dpt => dpt.Assets)
+                 .FirstOrDefaultAsync(dpt => dpt.Name == name);
+        if (department is null) return false;
+        if (department.Name != newName)
+        {
+            var isUnique = !await _dbContext.Departments.AnyAsync(d => d.Name == newName);
+            if (!isUnique) throw new DepartmentIsUniqueException("Department name must be unique");
+        }
+        var assets = department.Assets?.ToList();
+        _dbContext.Departments.Remove(department);
+
+        var newDepartmentToChange = new Department(newName);
+
+        foreach (var asset in assets)
+        {
+            asset.UpsertDepartment(newDepartmentToChange);
+        }
+
+        _dbContext.Departments.Add(newDepartmentToChange);
         var result = await _dbContext.SaveChangesAsync();
         return result > 0;
     }

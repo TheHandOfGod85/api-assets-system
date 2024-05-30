@@ -14,7 +14,7 @@ public class DepartmentController(IMediator mediator) : ControllerBase
         [FromBody] CreateADepartment request,
         CancellationToken cancellationToken)
     {
-        Result<DepartmentResponse> result = await mediator.Send(request, cancellationToken);
+        Result<DepartmentResponse?> result = await mediator.Send(request, cancellationToken);
         return result.IsSuccess ? Ok(result.Value) : result.ToProblemDetails();
     }
 
@@ -31,6 +31,16 @@ public class DepartmentController(IMediator mediator) : ControllerBase
         CancellationToken cancellationToken)
     {
         Result result = await mediator.Send(new DeleteADepartmentByName { Name = name }, cancellationToken);
+        return result.IsSuccess ? NoContent() : result.ToProblemDetails();
+    }
+    [HttpPatch(Endpoints.Departments.ChangeDepartmentName)]
+    public async Task<IActionResult> ChangeDepartmentName(
+        [FromBody] ChangeDepartmentName request,
+        [FromRoute] string name,
+        CancellationToken cancellationToken)
+    {
+        request.Name = name;
+        Result<bool> result = await mediator.Send(request, cancellationToken);
         return result.IsSuccess ? NoContent() : result.ToProblemDetails();
     }
 }

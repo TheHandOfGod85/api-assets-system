@@ -12,4 +12,10 @@ public class Department
     }
 
     private Department() { }
+
+
+    public void ChangeName(string name)
+    {
+        Name = name;
+    }
 }

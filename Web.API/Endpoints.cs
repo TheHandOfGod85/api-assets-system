@@ -22,5 +22,6 @@ public static class Endpoints
         public const string CreateADepartment = Base;
         public const string GetAllDepartments = Base;
         public const string DeleteADepartmentByName = $"{Base}/{{name}}";
+        public const string ChangeDepartmentName = $"{Base}/{{name}}";
     }
 }

@@ -10,4 +10,5 @@ public interface IDepartmentRepository
     Task<Department?> GetDepartmentByNameAsync(string name);
     Task<bool> CheckIfADepartmentExistsAsync(string name);
     Task<bool> DeleteADepartmentByNameAsync(string name);
+    Task<bool> ChangeDepartmentNameAsync(string? name, string newName);
 }

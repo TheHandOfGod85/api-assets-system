@@ -5,7 +5,7 @@ namespace Application;
 public class DepartmentResponse
 {
     public string Name { get; set; } = default!;
-    public List<string>? AssetName { get; set; }
+    public List<string>? AssetNames { get; set; }
 
 }
 
