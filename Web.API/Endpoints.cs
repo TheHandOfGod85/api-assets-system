@@ -24,4 +24,10 @@ public static class Endpoints
         public const string DeleteADepartmentByName = $"{Base}/{{name}}";
         public const string ChangeDepartmentName = $"{Base}/{{name}}";
     }
+
+    public static class Accounts
+    {
+        private const string Base = $"{ApiBase}/accounts";
+        public const string RegisterANewUserAndSendEmail = Base;
+    }
 }

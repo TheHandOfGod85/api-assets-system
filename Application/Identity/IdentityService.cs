@@ -36,6 +36,33 @@ public class IdentityService
         return TokenHandler.WriteToken(token);
     }
 
+    public bool VerifyToken(string token)
+    {
+        var tokenHandler = new JwtSecurityTokenHandler();
+
+        var tokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_settings?.SigningKey!)),
+            ValidateIssuer = false,
+            ValidateAudience = false,
+            RequireExpirationTime = true,
+            ValidateLifetime = true
+        };
+
+        try
+        {
+            SecurityToken validatedToken;
+            var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out validatedToken);
+            return true;
+        }
+        catch (Exception)
+        {
+            // Token validation failed
+            return false;
+        }
+    }
+
     private SecurityTokenDescriptor GetTokenDescriptor(ClaimsIdentity identity)
     {
         return new SecurityTokenDescriptor()

@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+        <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Remove="Assets\Repository\**" />
     <EmbeddedResource Remove="Assets\Repository\**" />
     <None Remove="Assets\Repository\**" />

@@ -8,15 +8,18 @@ public class AssetUnitOfWork : IUnitOfWork
     public AssetUnitOfWork(
         AssetDbContext context,
         IAssetRepository assets,
+        IAppUserRepository appUsers,
         IDepartmentRepository departments)
     {
         Assets = assets;
         Departments = departments;
+        AppUsers = appUsers;
         _context = context;
     }
 
     public IAssetRepository Assets { get; }
     public IDepartmentRepository Departments { get; }
+    public IAppUserRepository AppUsers { get; }
 
     public async Task RevertTransactionAsync(CancellationToken cancellationToken)
     {

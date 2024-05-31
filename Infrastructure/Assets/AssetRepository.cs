@@ -1,7 +1,6 @@
 ﻿using Application;
 using Domain;
 using Microsoft.EntityFrameworkCore;
-using SharedKernel;
 
 namespace Infrastructure;
 
