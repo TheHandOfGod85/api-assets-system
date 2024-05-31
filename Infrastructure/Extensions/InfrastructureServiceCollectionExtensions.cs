@@ -1,6 +1,8 @@
 ﻿using Application;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+
 
 namespace Infrastructure;
 
@@ -13,11 +15,14 @@ public static class InfrastructureServiceCollectionExtensions
         return services;
     }
 
-    public static IServiceCollection AddDatabase(this IServiceCollection services, string connectionString)
+    public static IServiceCollection AddDatabase(
+        this IServiceCollection services,
+        IConfiguration configuration)
     {
+        services.AddSingleton<IEmailSender, EmailSender>();
         services.AddScoped<IUnitOfWork, AssetUnitOfWork>();
-        services.AddDbContext<AssetDbContext>(options => options.UseSqlServer(connectionString));
+        services.AddDbContext<AssetDbContext>(options =>
+        options.UseSqlServer(configuration["Database:ConnectionString"]!));
         return services;
     }
-
 }

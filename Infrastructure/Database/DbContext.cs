@@ -1,10 +1,12 @@
 ﻿using System.Reflection;
 using Domain;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure;
 
-public class AssetDbContext : DbContext
+public class AssetDbContext : IdentityDbContext<IdentityUser>
 {
     public AssetDbContext(DbContextOptions options) : base(options)
     {
