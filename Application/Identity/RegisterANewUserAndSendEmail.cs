@@ -11,7 +11,7 @@ using System.Text.Json.Serialization;
 
 namespace Application;
 
-public class RegisterANewUserAndSendEmail : IRequest<Result>
+public class RegisterANewUserAndSendEmail : IRequest<Result<string>>
 {
     [Required]
     [EmailAddress]
@@ -28,7 +28,7 @@ public class RegisterANewUserAndSendEmail : IRequest<Result>
 
 }
 
-public class RegisterANewUserAndSendEmailHandler : IRequestHandler<RegisterANewUserAndSendEmail, Result>
+public class RegisterANewUserAndSendEmailHandler : IRequestHandler<RegisterANewUserAndSendEmail, Result<string>>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly UserManager<AppUser> _userManager;
@@ -56,25 +56,25 @@ public class RegisterANewUserAndSendEmailHandler : IRequestHandler<RegisterANewU
 
 
 
-    public async Task<Result> Handle(RegisterANewUserAndSendEmail request, CancellationToken cancellationToken)
+    public async Task<Result<string>> Handle(RegisterANewUserAndSendEmail request, CancellationToken cancellationToken)
     {
         try
         {
             await _unitOfWork.StartTransactionAsync(cancellationToken);
             var appUser = await CreateAppUserAsync(request);
-            if (appUser == null) return Result.Failure(AppUserErrors.UserRegistrationFailed);
+            if (appUser == null) return Result.Failure<string>(AppUserErrors.UserRegistrationFailed);
             var roleClaim = await AssignRole(request.Role, appUser.Value);
             var additionalsClaims = _identityService.GetAppUserClaims(appUser.Value);
             additionalsClaims.Add(roleClaim);
             await _userManager.AddClaimsAsync(appUser.Value, additionalsClaims);
-            await _unitOfWork.SubmitTransactionAsync(cancellationToken);
             var token = _identityService.GetJwtString(appUser.Value, additionalsClaims);
             SendEmail(appUser.Value, token);
-            return Result.Success();
+            await _unitOfWork.SubmitTransactionAsync(cancellationToken);
+            return Result.Success(token);
         }
         catch (AppUserAlreadyExistsException)
         {
-            return Result.Failure(AppUserErrors.UserAlreadyExists);
+            return Result.Failure<string>(AppUserErrors.UserAlreadyExists);
         }
         catch (Exception ex)
         {
@@ -87,7 +87,7 @@ public class RegisterANewUserAndSendEmailHandler : IRequestHandler<RegisterANewU
 
     private void SendEmail(AppUser appUser, string token)
     {
-        var origin = _httpContextAccessor.HttpContext?.Request.Headers.Origin;
+        var origin = _httpContextAccessor.HttpContext?.Request.Headers["Origin"].ToString();
         var verifyUrl = $"{origin}/authentication/completeRegistration/?token={token}";
         var htmlContent =
         $"<strong>{verifyUrl}</strong><br/><a href=\"#\">Click here to complete the registration</a><br/><strong>Or click below to resend the verification link</strong><br/><a href=\"#\">resend</a>";

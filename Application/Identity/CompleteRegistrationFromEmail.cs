@@ -45,18 +45,19 @@ public class CompleteRegistrationFromEmailHandler : IRequestHandler<CompleteRegi
             if (!isTokenValid) return Result.Failure<RegistrationResult>(AppUserErrors.InvalidToken);
             var appUser = await _userManager.FindByEmailAsync(request.EmailAddress);
             if (appUser == null) return Result.Failure<RegistrationResult>(AppUserErrors.UserNotFound(request.EmailAddress));
+            if (appUser.EmailConfirmed) return Result.Failure<RegistrationResult>(AppUserErrors.UserAlreadyConfirmed);
             appUser.EmailConfirmed = true;
             await _userManager.AddPasswordAsync(appUser, request.Password);
             await _userManager.UpdateAsync(appUser);
-            await _unitOfWork.SubmitTransactionAsync(cancellationToken);
             var additionalsClaims = await ComputeClaims(appUser);
             var token = _identityService.GetJwtString(appUser, additionalsClaims);
-            var regitrationResult = new RegistrationResult(
+            var registrationResult = new RegistrationResult(
                 appUser.FirstName,
                 appUser.LastName,
                 appUser.Email!,
                 token);
-            return Result.Success(regitrationResult);
+            await _unitOfWork.SubmitTransactionAsync(cancellationToken);
+            return Result.Success(registrationResult);
 
         }
         catch (Exception ex)

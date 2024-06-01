@@ -45,10 +45,13 @@ public class IdentityService
         {
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_settings?.SigningKey!)),
-            ValidateIssuer = false,
-            ValidateAudience = false,
+            ValidateIssuer = true,
+            ValidIssuer = _settings?.Issuer,
+            ValidAudiences = _settings?.Audiences,
+            ValidateAudience = true,
             RequireExpirationTime = true,
-            ValidateLifetime = true
+            ValidateLifetime = true,
+            ClockSkew = TimeSpan.Zero
         };
 
         try
@@ -77,12 +80,12 @@ public class IdentityService
 
     public string GetJwtString(AppUser appUser, IEnumerable<Claim> additionalClaims)
     {
-        var claimsIdentity = new ClaimsIdentity(new Claim[]
-        {
+        var claimsIdentity = new ClaimsIdentity(
+        [
             new(JwtRegisteredClaimNames.Sub, appUser.Email ?? throw new InvalidOperationException()),
             new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new(JwtRegisteredClaimNames.Email, appUser.Email),
-        });
+        ]);
         claimsIdentity.AddClaims(additionalClaims);
 
         var token = CreateSecurityToken(claimsIdentity);

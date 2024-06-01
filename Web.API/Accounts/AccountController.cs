@@ -13,9 +13,9 @@ public class AccountController(IMediator mediator) : ControllerBase
         CancellationToken cancellationToken
     )
     {
-        Result result = await mediator.Send(request, cancellationToken);
+        Result<string> result = await mediator.Send(request, cancellationToken);
         return result.IsSuccess
-        ? Ok()
+        ? Ok(result.Value)
         : result.ToProblemDetails();
     }
     [HttpPost(Endpoints.Accounts.CompleteRegistrationFromEmail)]
@@ -24,9 +24,9 @@ public class AccountController(IMediator mediator) : ControllerBase
         CancellationToken cancelToken
     )
     {
-        Result result = await mediator.Send(request, cancelToken);
+        Result<RegistrationResult> result = await mediator.Send(request, cancelToken);
         return result.IsSuccess
-        ? Ok()
+        ? Ok(result.Value)
         : result.ToProblemDetails();
     }
 }

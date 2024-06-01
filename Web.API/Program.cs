@@ -6,8 +6,19 @@ using sib_api_v3_sdk.Client;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(corsBuilder =>
+    {
+        corsBuilder.WithOrigins("http://localhost:3000", "http://localhost:3000")
+               .AllowAnyMethod()
+               .AllowAnyHeader();
+    });
+});
+
 // Add services to the container.
 var configuration = builder.Configuration;
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddControllers();
 builder.Services.AddApplication();
 builder.Services.AddDatabase(configuration);
@@ -24,16 +35,12 @@ builder.Services.Configure<MailSettings>(mailSection);
 builder.Host.UseSerilog((context, configuration) =>
     configuration.ReadFrom.Configuration(context.Configuration));
 
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 app.UseSerilogRequestLogging();
-
 app.UseHttpsRedirection();
-
+app.UseCors();
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();

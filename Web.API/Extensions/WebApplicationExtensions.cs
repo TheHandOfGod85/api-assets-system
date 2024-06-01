@@ -37,8 +37,9 @@ public static class WebApplicationExtensions
                     ValidIssuer = jwtSettings.Issuer,
                     ValidateAudience = true,
                     ValidAudiences = jwtSettings.Audiences,
-                    RequireExpirationTime = false,
-                    ValidateLifetime = true
+                    RequireExpirationTime = true,
+                    ValidateLifetime = true,
+                    ClockSkew = TimeSpan.Zero
                 };
                 jwt.Audience = jwtSettings.Audiences?[0];
                 jwt.ClaimsIssuer = jwtSettings.Issuer;
@@ -46,6 +47,7 @@ public static class WebApplicationExtensions
 
         builder.Services.AddIdentityCore<AppUser>(options =>
             {
+                options.Lockout.AllowedForNewUsers = false;
                 options.Password.RequireDigit = false;
                 options.Password.RequiredLength = 5;
                 options.Password.RequireLowercase = false;
