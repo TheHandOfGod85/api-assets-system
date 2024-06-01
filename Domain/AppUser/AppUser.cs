@@ -1,28 +1,24 @@
-﻿namespace Domain;
+﻿using Microsoft.AspNetCore.Identity;
 
-public class AppUser
+namespace Domain;
+
+public class AppUser : IdentityUser
 {
-    public Guid Id { get; private set; }
-    public string IdentityId { get; private set; } = default!;
     public string FirstName { get; private set; } = default!;
     public string LastName { get; private set; } = default!;
-    public string EmailAddress { get; private set; } = default!;
     public Uri? ProfilePhotoUrl { get; private set; }
 
     public AppUser(
-        string identityId,
         string firstName,
         string lastName,
-        string emailAddress,
-        Guid? id = null
-
+        string email,
+        string userName
     )
     {
-        Id = id ?? Guid.NewGuid();
         FirstName = firstName;
         LastName = lastName;
-        EmailAddress = emailAddress;
-        IdentityId = identityId;
+        Email = email;
+        UserName = userName;
     }
 
     private AppUser() { }

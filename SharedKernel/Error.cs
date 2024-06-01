@@ -26,6 +26,8 @@ public record Error
 
     public static Error Conflict(string code, string description) =>
         new(code, description, ErrorType.Conflict);
+    public static Error Unhautorized(string code, string description) =>
+        new(code, description, ErrorType.Unhautorized);
 
     public static Error Failure(string code, string description) =>
         new(code, description, ErrorType.Failure);

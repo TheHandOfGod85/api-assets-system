@@ -18,4 +18,15 @@ public class AccountController(IMediator mediator) : ControllerBase
         ? Ok()
         : result.ToProblemDetails();
     }
+    [HttpPost(Endpoints.Accounts.CompleteRegistrationFromEmail)]
+    public async Task<IActionResult> CompleteRegistrationFromEmail(
+        [FromBody] CompleteRegistrationFromEmail request,
+        CancellationToken cancelToken
+    )
+    {
+        Result result = await mediator.Send(request, cancelToken);
+        return result.IsSuccess
+        ? Ok()
+        : result.ToProblemDetails();
+    }
 }

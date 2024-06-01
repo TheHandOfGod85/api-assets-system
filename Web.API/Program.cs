@@ -3,16 +3,12 @@ using Infrastructure;
 using Serilog;
 using Web.API;
 using sib_api_v3_sdk.Client;
-using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 var configuration = builder.Configuration;
-builder.Services.AddControllers().AddJsonOptions(options =>
-{
-    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-});
+builder.Services.AddControllers();
 builder.Services.AddApplication();
 builder.Services.AddDatabase(configuration);
 builder.Services.AddInfrastructure();

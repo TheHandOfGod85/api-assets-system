@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using Application;
+using Domain;
 using Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -43,17 +44,17 @@ public static class WebApplicationExtensions
                 jwt.ClaimsIssuer = jwtSettings.Issuer;
             });
 
-        builder.Services.AddIdentityCore<IdentityUser>(options =>
+        builder.Services.AddIdentityCore<AppUser>(options =>
             {
                 options.Password.RequireDigit = false;
                 options.Password.RequiredLength = 5;
                 options.Password.RequireLowercase = false;
                 options.Password.RequireUppercase = false;
                 options.Password.RequireNonAlphanumeric = false;
-                options.ClaimsIdentity.UserIdClaimType = "IdentityId";
+                options.ClaimsIdentity.UserIdClaimType = "AppUserId";
             })
             .AddRoles<IdentityRole>()
-            .AddSignInManager()
+            .AddSignInManager<SignInManager<AppUser>>()
             .AddEntityFrameworkStores<AssetDbContext>();
 
         return builder;

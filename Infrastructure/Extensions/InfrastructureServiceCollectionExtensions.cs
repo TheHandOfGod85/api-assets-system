@@ -11,7 +11,6 @@ public static class InfrastructureServiceCollectionExtensions
     public static IServiceCollection AddInfrastructure(this IServiceCollection services)
     {
         services.AddScoped<IAssetRepository, AssetRepository>();
-        services.AddScoped<IAppUserRepository, AppUserRepository>();
         services.AddScoped<IDepartmentRepository, DepartmentRepository>();
         return services;
     }

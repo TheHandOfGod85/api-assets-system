@@ -1,6 +1,7 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Domain;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
@@ -61,6 +62,31 @@ public class IdentityService
             // Token validation failed
             return false;
         }
+    }
+
+    public List<Claim> GetAppUserClaims(AppUser appUser)
+    {
+        return new List<Claim>
+        {
+            new("AppUserId", appUser.Id),
+            new("EmailAddress", appUser.Email!),
+            new("FirstName", appUser.FirstName),
+            new("LastName", appUser.LastName)
+        };
+    }
+
+    public string GetJwtString(AppUser appUser, IEnumerable<Claim> additionalClaims)
+    {
+        var claimsIdentity = new ClaimsIdentity(new Claim[]
+        {
+            new(JwtRegisteredClaimNames.Sub, appUser.Email ?? throw new InvalidOperationException()),
+            new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+            new(JwtRegisteredClaimNames.Email, appUser.Email),
+        });
+        claimsIdentity.AddClaims(additionalClaims);
+
+        var token = CreateSecurityToken(claimsIdentity);
+        return WriteToken(token);
     }
 
     private SecurityTokenDescriptor GetTokenDescriptor(ClaimsIdentity identity)
