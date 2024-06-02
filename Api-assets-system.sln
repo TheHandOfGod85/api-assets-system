@@ -15,11 +15,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastru
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{DA89E519-9BDA-4A3C-BA25-FB66BD0A83AB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.IntegrationTest", "tests\Application.UnitTest\Application.IntegrationTest.csproj", "{C3134A12-21F1-419A-B012-517A9D8282EE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.UnitTests", "tests\Application.UnitTest\Application.UnitTests.csproj", "{C3134A12-21F1-419A-B012-517A9D8282EE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "tests\Common\Common.csproj", "{DDB5B065-8044-420E-BB64-7C36849FD275}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.Api.E2ETest", "tests\Web.Api.E2ETest\Web.Api.E2ETest.csproj", "{3E74E801-38A4-4D79-9DF1-CDDA00C11E12}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.Api.IntegrationTests", "tests\Web.Api.E2ETest\Web.Api.IntegrationTests.csproj", "{3E74E801-38A4-4D79-9DF1-CDDA00C11E12}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
