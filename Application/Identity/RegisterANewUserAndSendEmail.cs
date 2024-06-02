@@ -13,16 +13,15 @@ namespace Application;
 
 public class RegisterANewUserAndSendEmail : IRequest<Result<string>>
 {
-    [Required]
+    [Required(ErrorMessage = "Email address is required")]
     [EmailAddress]
     public string EmailAddress { get; set; } = default!;
-    [Required]
+    [Required(ErrorMessage = "FirstName is required")]
     [MaxLength(50, ErrorMessage = "Max 50 characters")]
     public string FirstName { get; set; } = default!;
-    [Required]
+    [Required(ErrorMessage = "LastName is required")]
     [MaxLength(50, ErrorMessage = "Max 50 characters")]
     public string LastName { get; set; } = default!;
-    // [ValidUserRole]
     [EnumDataType(typeof(Role), ErrorMessage = "Invalid role specified. (Admin or AppUser)")]
     public Role Role { get; set; } = default!;
 
