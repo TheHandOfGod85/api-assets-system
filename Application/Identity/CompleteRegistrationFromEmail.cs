@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Domain;
 using MediatR;
@@ -49,7 +48,7 @@ public class CompleteRegistrationFromEmailHandler : IRequestHandler<CompleteRegi
             appUser.EmailConfirmed = true;
             await _userManager.AddPasswordAsync(appUser, request.Password);
             await _userManager.UpdateAsync(appUser);
-            var additionalsClaims = await ComputeClaims(appUser);
+            var additionalsClaims = await _identityService.ComputeClaims(appUser);
             var token = _identityService.GetJwtString(appUser, additionalsClaims);
             var registrationResult = new RegistrationResult(
                 appUser.FirstName,
@@ -67,17 +66,7 @@ public class CompleteRegistrationFromEmailHandler : IRequestHandler<CompleteRegi
             throw;
         }
     }
-    private async Task<List<Claim>> ComputeClaims(AppUser appUser)
-    {
-        var roles = await _userManager.GetRolesAsync(appUser);
-        var role = roles.FirstOrDefault();
-        var roleClaim = new Claim(ClaimTypes.Role, role!);
-        var additionalsClaims = _identityService.GetAppUserClaims(appUser);
-        additionalsClaims.Add(roleClaim);
-        return additionalsClaims;
-    }
 }
-
 
 public record RegistrationResult(
     string firstaName,

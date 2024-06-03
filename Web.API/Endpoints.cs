@@ -30,5 +30,6 @@ public static class Endpoints
         private const string Base = $"{ApiBase}/accounts";
         public const string RegisterANewUserAndSendEmail = Base;
         public const string CompleteRegistrationFromEmail = $"{Base}/completeRegistration";
+        public const string ResendSendEmailToRegister = $"{Base}/resendRegistration";
     }
 }

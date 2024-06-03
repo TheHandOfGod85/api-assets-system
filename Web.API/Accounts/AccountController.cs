@@ -29,4 +29,14 @@ public class AccountController(IMediator mediator) : ControllerBase
         ? Ok(result.Value)
         : result.ToProblemDetails();
     }
+    [HttpPost(Endpoints.Accounts.ResendSendEmailToRegister)]
+    public async Task<IActionResult> ResendEmailToRegister(
+        [FromBody] ResendEmailToRegister request,
+        CancellationToken cancellationToken)
+    {
+        Result<string> result = await mediator.Send(request, cancellationToken);
+        return result.IsSuccess
+        ? Ok(result.Value)
+        : result.ToProblemDetails();
+    }
 }

@@ -67,7 +67,7 @@ public class RegisterANewUserAndSendEmailHandler : IRequestHandler<RegisterANewU
             additionalsClaims.Add(roleClaim);
             await _userManager.AddClaimsAsync(appUser.Value, additionalsClaims);
             var token = _identityService.GetJwtString(appUser.Value, additionalsClaims);
-            SendEmail(appUser.Value, token);
+            _identityService.SendEmailRegistration(appUser.Value, token);
             await _unitOfWork.SubmitTransactionAsync(cancellationToken);
             return Result.Success(token);
         }
@@ -84,26 +84,7 @@ public class RegisterANewUserAndSendEmailHandler : IRequestHandler<RegisterANewU
 
     }
 
-    private void SendEmail(AppUser appUser, string token)
-    {
-        var origin = _httpContextAccessor.HttpContext?.Request.Headers["Origin"].ToString();
-        var verifyUrl = $"{origin}/authentication/completeRegistration/?token={token}";
-        var htmlContent =
-        $"<strong>{verifyUrl}</strong><br/><a href=\"#\">Click here to complete the registration</a><br/><strong>Or click below to resend the verification link</strong><br/><a href=\"#\">resend</a>";
 
-        string receiverEmail = appUser.Email!;
-        string receiverName = appUser.LastName + " " + appUser.FirstName;
-        string subject = "Registration to AssetsSystem";
-        string message = "Please, complete the registration following this link below";
-
-        _emailSender.SendEmail(
-            receiverEmail,
-            receiverName,
-            subject,
-            message,
-            htmlContent
-            );
-    }
 
     private async Task<Claim> AssignRole(Role requestRole, AppUser appUser)
     {

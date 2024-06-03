@@ -11,7 +11,7 @@ public static class ApplicationServiceCollectionExtensions
             cfg.RegisterServicesFromAssembly(typeof(IApplicationMarker).Assembly);
 
         });
-        services.AddSingleton<IdentityService>();
+        services.AddScoped<IdentityService>();
         return services;
     }
 }

@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Testcontainers.MsSql;
-using Testcontainers.PostgreSql;
 
 namespace Web.Api.IntegrationTests;
 
@@ -36,7 +35,6 @@ public class IntegrationTestWebAppFactory : WebApplicationFactory<Program>, IAsy
             {
                 options
                     .UseSqlServer(_dbContainer.GetConnectionString());
-                    // .UseSnakeCaseNamingConvention();
             });
 
             services.AddIdentityCore<AppUser>(options =>
