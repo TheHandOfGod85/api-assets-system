@@ -49,7 +49,7 @@ public class AccountController(IMediator mediator) : ControllerBase
     {
         Result<string> result = await mediator.Send(request, cancellationToken);
         return result.IsSuccess
-        ? Ok(result.Value)
+        ? Ok(new { Token = result.Value })
         : result.ToProblemDetails();
     }
 }
