@@ -1,9 +1,11 @@
 ﻿using Application;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SharedKernel;
 
 namespace Web.API;
+[Authorize]
 [ApiController]
 public class AssetController(
     IMediator mediator

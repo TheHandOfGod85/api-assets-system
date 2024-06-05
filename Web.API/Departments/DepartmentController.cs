@@ -1,10 +1,12 @@
 ﻿using Application;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SharedKernel;
 
 namespace Web.API;
 [ApiController]
+[Authorize]
 public class DepartmentController(IMediator mediator) : ControllerBase
 {
 

@@ -19,4 +19,12 @@ public static class AppUserErrors
     public static Error UserRegistrationFailed => Error.Conflict(
         "AppUser.RegistrationFailure", $"Could not register the new user"
     );
+
+    public static Error InvalidCredentials => Error.Unhautorized(
+        "AppUser.InvalidCredentials", "Email address or password is incorrect"
+    );
+
+    public static Error EmailNotConfirmed(string emailAddress) => Error.Unhautorized(
+        "AppUser.EmailNotConfirmed", $"The email {emailAddress} is not confirmed"
+    );
 }

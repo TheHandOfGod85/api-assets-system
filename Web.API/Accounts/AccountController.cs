@@ -1,5 +1,6 @@
 ﻿using Application;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SharedKernel;
 
@@ -7,6 +8,7 @@ namespace Web.API;
 [ApiController]
 public class AccountController(IMediator mediator) : ControllerBase
 {
+    [Authorize]
     [HttpPost(Endpoints.Accounts.RegisterANewUserAndSendEmail)]
     public async Task<IActionResult> RegisterANewUserAndSendEmail(
         [FromBody] RegisterANewUserAndSendEmail request,
@@ -29,9 +31,20 @@ public class AccountController(IMediator mediator) : ControllerBase
         ? Ok(result.Value)
         : result.ToProblemDetails();
     }
+    [Authorize]
     [HttpPost(Endpoints.Accounts.ResendSendEmailToRegister)]
     public async Task<IActionResult> ResendEmailToRegister(
         [FromBody] ResendEmailToRegister request,
+        CancellationToken cancellationToken)
+    {
+        Result<string> result = await mediator.Send(request, cancellationToken);
+        return result.IsSuccess
+        ? Ok(result.Value)
+        : result.ToProblemDetails();
+    }
+    [HttpPost(Endpoints.Accounts.Login)]
+    public async Task<IActionResult> Login(
+        [FromBody] Login request,
         CancellationToken cancellationToken)
     {
         Result<string> result = await mediator.Send(request, cancellationToken);
