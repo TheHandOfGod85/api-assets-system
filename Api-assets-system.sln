@@ -19,7 +19,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.UnitTests", "te
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "tests\Common\Common.csproj", "{DDB5B065-8044-420E-BB64-7C36849FD275}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.Api.IntegrationTests", "tests\Web.Api.E2ETest\Web.Api.IntegrationTests.csproj", "{3E74E801-38A4-4D79-9DF1-CDDA00C11E12}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.IntegrationTests", "tests\Application.IntegrationTest\Application.IntegrationTests.csproj", "{3E74E801-38A4-4D79-9DF1-CDDA00C11E12}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
