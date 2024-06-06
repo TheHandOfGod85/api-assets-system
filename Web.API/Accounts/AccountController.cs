@@ -52,4 +52,24 @@ public class AccountController(IMediator mediator) : ControllerBase
         ? Ok(new { Token = result.Value })
         : result.ToProblemDetails();
     }
+    [HttpPost(Endpoints.Accounts.ForgotPassword)]
+    public async Task<IActionResult> ForgotPassword(
+        [FromBody] ForgotPassword request,
+        CancellationToken cancellationToken)
+    {
+        Result<string> result = await mediator.Send(request, cancellationToken);
+        return result.IsSuccess
+        ? Ok(new { Token = result.Value })
+        : result.ToProblemDetails();
+    }
+    [HttpPost(Endpoints.Accounts.ChangePassword)]
+    public async Task<IActionResult> ChangePassword(
+        [FromBody] ChangePassword request,
+        CancellationToken cancellationToken)
+    {
+        Result result = await mediator.Send(request, cancellationToken);
+        return result.IsSuccess
+        ? NoContent()
+        : result.ToProblemDetails();
+    }
 }

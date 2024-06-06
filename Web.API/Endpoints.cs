@@ -32,5 +32,7 @@ public static class Endpoints
         public const string CompleteRegistrationFromEmail = $"{Base}/completeRegistration";
         public const string ResendSendEmailToRegister = $"{Base}/resendRegistration";
         public const string Login = $"{Base}/login";
+        public const string ForgotPassword = $"{Base}/forgotPassword";
+        public const string ChangePassword = $"{Base}/changePassword";
     }
 }

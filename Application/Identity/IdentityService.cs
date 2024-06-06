@@ -39,12 +39,12 @@ public class IdentityService
 
     private static JwtSecurityTokenHandler TokenHandler => new();
 
-    private SecurityTokenDescriptor GetTokenDescriptor(ClaimsIdentity identity)
+    private SecurityTokenDescriptor GetTokenDescriptor(ClaimsIdentity identity, int expires = 120)
     {
         return new SecurityTokenDescriptor()
         {
             Subject = identity,
-            Expires = DateTime.Now.AddHours(2),
+            Expires = DateTime.Now.AddMinutes(expires),
             Audience = _settings!.Audiences?[0]!,
             Issuer = _settings.Issuer,
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(_key),
@@ -52,9 +52,9 @@ public class IdentityService
         };
     }
 
-    public SecurityToken CreateSecurityToken(ClaimsIdentity identity)
+    public SecurityToken CreateSecurityToken(ClaimsIdentity identity, int expires = 120)
     {
-        var tokenDescriptor = GetTokenDescriptor(identity);
+        var tokenDescriptor = GetTokenDescriptor(identity, expires);
 
         return TokenHandler.CreateToken(tokenDescriptor);
     }
@@ -105,7 +105,7 @@ public class IdentityService
         };
     }
 
-    public string GetJwtString(AppUser appUser, IEnumerable<Claim> additionalClaims)
+    public string GetJwtString(AppUser appUser, IEnumerable<Claim> additionalClaims, int expires = 120)
     {
         var claimsIdentity = new ClaimsIdentity(
         [
@@ -115,7 +115,7 @@ public class IdentityService
         ]);
         claimsIdentity.AddClaims(additionalClaims);
 
-        var token = CreateSecurityToken(claimsIdentity);
+        var token = CreateSecurityToken(claimsIdentity, expires);
         return WriteToken(token);
     }
     public async Task<List<Claim>> ComputeClaims(AppUser appUser)
@@ -132,12 +132,32 @@ public class IdentityService
         var origin = _httpContextAccessor.HttpContext?.Request.Headers["Origin"].ToString();
         var verifyUrl = $"{origin}/authentication/completeRegistration/?token={token}";
         var htmlContent =
-        $"<strong>{verifyUrl}</strong><br/><a href=\"#\">Click here to complete the registration</a><br/><strong>Or click below to resend the verification link</strong><br/><a href=\"#\">resend</a>";
+        $"<strong>{verifyUrl}</strong><br/><a href=\"#\">Click here to complete the registration</a><br/><strong>Or click below</strong><br/><a href=\"#\">resend</a>";
 
         string receiverEmail = appUser.Email!;
         string receiverName = appUser.LastName + " " + appUser.FirstName;
-        string subject = "Registration to AssetsSystem";
+        string subject = "Registration-AssetsSystem";
         string message = "Please, complete the registration following this link below";
+
+        _emailSender.SendEmail(
+            receiverEmail,
+            receiverName,
+            subject,
+            message,
+            htmlContent
+            );
+    }
+    public void SendEmailForgotPassword(AppUser appUser, string token)
+    {
+        var origin = _httpContextAccessor.HttpContext?.Request.Headers["Origin"].ToString();
+        var verifyUrl = $"{origin}/authentication/changePassword/?token={token}";
+        var htmlContent =
+        $"<strong>{verifyUrl}</strong><br/><a href=\"#\">Click here to change your password</a><br/><strong>Or click below</strong><br/><a href=\"#\">change</a>";
+
+        string receiverEmail = appUser.Email!;
+        string receiverName = appUser.LastName + " " + appUser.FirstName;
+        string subject = "Change password-AssetsSystem";
+        string message = "Please, change your password following the link";
 
         _emailSender.SendEmail(
             receiverEmail,

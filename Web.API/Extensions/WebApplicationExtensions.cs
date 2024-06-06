@@ -57,7 +57,8 @@ public static class WebApplicationExtensions
             })
             .AddRoles<IdentityRole>()
             .AddSignInManager<SignInManager<AppUser>>()
-            .AddEntityFrameworkStores<AssetDbContext>();
+            .AddEntityFrameworkStores<AssetDbContext>()
+            .AddDefaultTokenProviders();
 
         return builder;
 

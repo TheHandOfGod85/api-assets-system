@@ -4,6 +4,10 @@ namespace Domain;
 
 public static class AppUserErrors
 {
+    public static Error NewPasswordIsNotSameAsOld => Error.Conflict(
+        "AppUser.NewPasswordIsNotSameAsOld", "New password cannot be the same as the old password"
+    );
+
     public static Error UserAlreadyExists => Error.Conflict(
         "AppUser.AlreadyExists", "The user already exists"
     );
