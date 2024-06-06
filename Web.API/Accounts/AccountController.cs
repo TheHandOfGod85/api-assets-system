@@ -8,7 +8,7 @@ namespace Web.API;
 [ApiController]
 public class AccountController(IMediator mediator) : ControllerBase
 {
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     [HttpPost(Endpoints.Accounts.RegisterANewUserAndSendEmail)]
     public async Task<IActionResult> RegisterANewUserAndSendEmail(
         [FromBody] RegisterANewUserAndSendEmail request,
@@ -17,7 +17,7 @@ public class AccountController(IMediator mediator) : ControllerBase
     {
         Result<string> result = await mediator.Send(request, cancellationToken);
         return result.IsSuccess
-        ? Ok(result.Value)
+        ? Ok(new { Token = result.Value })
         : result.ToProblemDetails();
     }
     [HttpPost(Endpoints.Accounts.CompleteRegistrationFromEmail)]
@@ -31,7 +31,7 @@ public class AccountController(IMediator mediator) : ControllerBase
         ? Ok(result.Value)
         : result.ToProblemDetails();
     }
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     [HttpPost(Endpoints.Accounts.ResendSendEmailToRegister)]
     public async Task<IActionResult> ResendEmailToRegister(
         [FromBody] ResendEmailToRegister request,
@@ -39,7 +39,7 @@ public class AccountController(IMediator mediator) : ControllerBase
     {
         Result<string> result = await mediator.Send(request, cancellationToken);
         return result.IsSuccess
-        ? Ok(result.Value)
+        ? Ok(new { Token = result.Value })
         : result.ToProblemDetails();
     }
     [HttpPost(Endpoints.Accounts.Login)]
