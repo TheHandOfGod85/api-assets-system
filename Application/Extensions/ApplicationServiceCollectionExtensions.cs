@@ -11,6 +11,7 @@ public static class ApplicationServiceCollectionExtensions
             cfg.RegisterServicesFromAssembly(typeof(IApplicationMarker).Assembly);
 
         });
+        services.AddScoped<CurrentAppUser>();
         services.AddScoped<IdentityService>();
         return services;
     }

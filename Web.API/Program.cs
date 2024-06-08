@@ -38,6 +38,7 @@ builder.Host.UseSerilog((context, configuration) =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+app.UseStaticFiles();
 app.UseSerilogRequestLogging();
 app.UseHttpsRedirection();
 app.UseCors();

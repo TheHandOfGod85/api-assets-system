@@ -34,5 +34,6 @@ public static class Endpoints
         public const string Login = $"{Base}/login";
         public const string ForgotPassword = $"{Base}/forgotPassword";
         public const string ChangePassword = $"{Base}/changePassword";
+        public const string UploadPhoto = $"{Base}/UploadPhoto";
     }
 }

@@ -72,4 +72,16 @@ public class AccountController(IMediator mediator) : ControllerBase
         ? NoContent()
         : result.ToProblemDetails();
     }
+    [Authorize]
+    [HttpPost(Endpoints.Accounts.UploadPhoto)]
+    public async Task<IActionResult> UploadPhoto(
+        [FromForm] UploadPhoto request,
+        CancellationToken cancellationToken
+        )
+    {
+        Result<string> result = await mediator.Send(request, cancellationToken);
+        return result.IsSuccess
+        ? Ok(new { PhotoUri = result.Value })
+        : result.ToProblemDetails();
+    }
 }

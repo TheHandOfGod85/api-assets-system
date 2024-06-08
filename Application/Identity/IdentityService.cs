@@ -129,8 +129,9 @@ public class IdentityService
     }
     public void SendEmailRegistration(AppUser appUser, string token)
     {
-        var origin = _httpContextAccessor.HttpContext?.Request.Headers["Origin"].ToString();
-        var verifyUrl = $"{origin}/authentication/completeRegistration/?token={token}";
+        var requestUrl = _httpContextAccessor?.HttpContext?.Request;
+        var baseUri = $"{requestUrl?.Scheme}://{requestUrl?.Host}{requestUrl?.PathBase}";
+        var verifyUrl = $"{baseUri}/authentication/completeRegistration/?token={token}";
         var htmlContent =
         $"<strong>{verifyUrl}</strong><br/><a href=\"#\">Click here to complete the registration</a><br/><strong>Or click below</strong><br/><a href=\"#\">resend</a>";
 
@@ -149,8 +150,9 @@ public class IdentityService
     }
     public void SendEmailForgotPassword(AppUser appUser, string token)
     {
-        var origin = _httpContextAccessor.HttpContext?.Request.Headers["Origin"].ToString();
-        var verifyUrl = $"{origin}/authentication/changePassword/?token={token}";
+        var requestUrl = _httpContextAccessor?.HttpContext?.Request;
+        var baseUri = $"{requestUrl?.Scheme}://{requestUrl?.Host}{requestUrl?.PathBase}";
+        var verifyUrl = $"{baseUri}/authentication/changePassword/?token={token}";
         var htmlContent =
         $"<strong>{verifyUrl}</strong><br/><a href=\"#\">Click here to change your password</a><br/><strong>Or click below</strong><br/><a href=\"#\">change</a>";
 
