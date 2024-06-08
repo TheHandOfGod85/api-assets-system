@@ -68,19 +68,19 @@ public class LoginTest : BaseIntegrationTest
     public async Task Login_Returns_SuccesToken()
     {
         //arrange
-        var registerNotConfirm = new RegisterANewUserAndSendEmail
+        var registerConfirm = new RegisterANewUserAndSendEmail
         {
             EmailAddress = "dan@test.com",
             FirstName = "dan",
             LastName = "Del Piano",
             Role = Role.AppUser
         };
-        var registerNotConfirmResponse = await Sender.Send(registerNotConfirm);
+        var registerConfirmResponse = await Sender.Send(registerConfirm);
         var completedRegistration = new CompleteRegistrationFromEmail
         {
             EmailAddress = "dan@test.com",
             Password = "Pa$$0rd!",
-            Token = registerNotConfirmResponse.Value
+            Token = registerConfirmResponse.Value
         };
         await Sender.Send(completedRegistration);
         var command = new Login { EmailAddress = "dan@test.com", Password = "Pa$$0rd!" };

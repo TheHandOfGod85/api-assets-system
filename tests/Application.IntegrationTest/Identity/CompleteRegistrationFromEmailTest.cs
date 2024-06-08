@@ -13,7 +13,7 @@ public class CompleteRegistrationFromEmailTest : BaseIntegrationTest
 
     }
     [Fact]
-    public async Task Handler_Should_Return_Return_Error_Invalid_Token()
+    public async Task Handler_Should_Return_Error_Invalid_Token()
     {
         var command = new CompleteRegistrationFromEmail
         {
