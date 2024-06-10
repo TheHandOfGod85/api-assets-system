@@ -11,6 +11,7 @@ namespace Application;
 public class UploadPhoto : IRequest<Result<string>>
 {
     [Required]
+    [PhotoValidator]
     public IFormFile Photo { get; set; } = default!;
 }
 
