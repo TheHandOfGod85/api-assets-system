@@ -33,24 +33,19 @@ public class RegisterANewUserAndSendEmailHandler : IRequestHandler<RegisterANewU
     private readonly UserManager<AppUser> _userManager;
     private readonly IdentityService _identityService;
     private readonly RoleManager<IdentityRole> _roleManager;
-    private readonly IEmailSender _emailSender;
-    private readonly IHttpContextAccessor _httpContextAccessor;
 
 
     public RegisterANewUserAndSendEmailHandler(
         IUnitOfWork unitOfWork,
         UserManager<AppUser> userManager,
         RoleManager<IdentityRole> roleManager,
-        IdentityService identityService,
-        IEmailSender emailSender,
-        IHttpContextAccessor httpContextAccessor)
+        IdentityService identityService
+        )
     {
         _unitOfWork = unitOfWork;
         _userManager = userManager;
         _identityService = identityService;
         _roleManager = roleManager;
-        _emailSender = emailSender;
-        _httpContextAccessor = httpContextAccessor;
     }
 
 
